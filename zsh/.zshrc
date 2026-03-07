@@ -1,138 +1,151 @@
-# ======================================
-# 🧩 Zsh Configuration (Optimized for Starship)
+
 # ======================================
 
-# 🧭 PATH SETUP
+# 🧩 Zsh Configuration (Optimized for Starship)
+
+# ======================================
+
+# ======================================
+
+# 🧭 PATH / Environment Setup
+
+# ======================================
+
 export ZSH="$HOME/.oh-my-zsh"
 
-# Add Homebrew to PATH
-if [[ -x /opt/homebrew/bin/brew ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
+# Homebrew
 
-# RbEnv
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Ruby
+
 eval "$(rbenv init -)"
 
-# Flutter setup
+# Flutter
+
 export PATH="$PATH:/opt/homebrew/Caskroom/flutter/latest/flutter/bin"
 
-# Android SDK setup
+# Android SDK
+
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
 export PATH="$ANDROID_HOME/tools:$PATH"
 export PATH="$ANDROID_HOME/tools/bin:$PATH"
 
-# Java setup
+# Java
+
 export JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
-export PATH="$JAVA_HOME/bin:$PATH"
-
-# Clean up PATH duplicates
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export PATH="/bin:$PATH"
+
+# Antigravity
+
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # ======================================
+
 # 🧠 Oh My Zsh Setup
+
 # ======================================
 
-ZSH_THEME=""  # No theme; Starship will handle the prompt
+ZSH_THEME=""
 
 plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+git
+zsh-autosuggestions
+zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # ======================================
-# 🌟 Starship Prompt
-# ======================================
 
-eval "$(starship init zsh)"
-
-# ======================================
 # 🧰 Custom Functions
+
 # ======================================
 
-# Fuzzy cd using fzf
+# Fuzzy directory change
+
 fcd() {
-  local dir
-  dir=$(find . -type d 2>/dev/null | fzf) && cd "$dir" || return
+local dir
+dir=$(find . -type d 2>/dev/null | fzf) && cd "$dir" || return
 }
 
 # ======================================
+
 # 🧠 Developer Aliases
+
 # ======================================
 
-# --- Navigation ---
-#alias ..="cd .."
-#alias ...="cd ../.."
-# alias ....="cd ../../.."
-# alias c="clear"
+# Navigation
 
-# --- File Listing ---
-alias ls="ls --color=auto"
-# alias ll="ls -lh"
-# alias la="ls -la"
-
-# --- Config Editing ---
 alias n="nvim"
-# alias v="nvim"
 alias zrc="nvim ~/.zshrc"
 alias src="source ~/.zshrc"
-# alias star="nvim ~/.config/starship.toml"
 alias rz="exec zsh"
 
-# --- Git Shortcuts ---
-# alias g="git"
-# alias gs="git status"
-# alias ga="git add ."
-# alias gc="git commit -m"
-# alias gp="git push"
-# alias gl="git pull"
-# alias gb="git branch"
-# alias gco="git checkout"
-# alias gcm="git checkout main"
-# alias gd="git diff"
-# alias glog="git log --oneline --graph --decorate"
+# Listing
 
-# --- LazyGit Shortcuts ---
+alias ls="eza"
+alias ll="eza -lh"
+alias la="eza -la"
+
+# Git UI
+
 alias lg="lazygit"
 
-# --- Flutter ---
+# Flutter
+
 alias fr="flutter run"
 alias fb="flutter build"
 alias fcl="flutter clean"
 alias fp="flutter pub get"
 
-# --- Node / npm ---
-# alias nr="npm run"
-# alias ni="npm install"
-# alias nd="npm run dev"
+# Python
 
-# --- Python ---
 alias py="python3"
 alias venv="source venv/bin/activate"
 
-# --- Sketchybar ---
+# SketchyBar
+
 alias skre="sketchybar --reload"
 
-# --- System Utils ---
+# Utilities
+
 alias update="brew update && brew upgrade && brew cleanup"
 alias ip="ifconfig | grep inet"
 alias h="history | tail -n 20"
 alias path="echo $PATH | tr ':' '\n'"
 
 # ======================================
+
+# 🔧 Config Editing Shortcuts
+
+# ======================================
+
+alias star="nvim ~/.config/starship.toml"
+alias nvrc="nvim ~/.config/nvim"
+alias skrc="nvim ~/.config/sketchybar"
+
+# ======================================
+
 # 🧩 FZF Integration
+
 # ======================================
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # ======================================
-# ✅ End of Configuration
+
+# 🌟 Starship Prompt (Load Last)
+
 # ======================================
 
-# Added by Antigravity
-export PATH="/Users/aritrasanyal/.antigravity/antigravity/bin:$PATH"
+eval "$(starship init zsh)"
+
+# ======================================
+
+# ✅ End of Configuration
+
+# ======================================
+
