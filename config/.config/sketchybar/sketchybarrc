@@ -1,0 +1,34 @@
+CONFIG_DIR="$HOME/.config/sketchybar"
+
+# Load global settings and item definitions
+. "$CONFIG_DIR/globals.sh"
+. "$CONFIG_DIR/items.sh"
+
+# Initialize bar with global bar and default settings
+sketchybar --bar "${SB_BAR[@]}" --default "${SB_DEFAULT[@]}"
+
+# Events used by bar components
+sketchybar --add event window_change
+sketchybar --add event front_app_switched
+
+
+# Left side items
+sb_clock left
+sb_separator left 14 14
+sb_date left
+sb_separator left 14 14
+sb_spaces left
+sb_separator left 14 14
+sb_front_app left
+
+
+# Right side items
+sb_battery right
+sb_cpu right
+sb_volume right
+sb_separator right 14 14
+sb_theme_toggle right
+
+
+# Apply configuration
+sketchybar --update

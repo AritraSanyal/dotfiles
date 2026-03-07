@@ -1,0 +1,6 @@
+clear
+mkdir -p ~/.config/nushell
+mkdir ~/.config/nushell
+ls .config
+ls .config/nushell/
+mv `~/Library/Application Support/nushell/`*.nu ~/.config/nushell/

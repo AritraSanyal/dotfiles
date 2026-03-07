@@ -1,0 +1,162 @@
+# -----------------------------
+# Startup Programs
+# -----------------------------
+after-startup-command = [
+    'exec-and-forget sketchybar',
+    'exec-and-forget borders'
+]
+
+# Notify Sketchybar when workspace changes
+exec-on-workspace-change = [
+    '/bin/bash',
+    '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+# Start AeroSpace when macOS logs in
+start-at-login = false
+
+
+# -----------------------------
+# Window Normalization
+# -----------------------------
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+
+# -----------------------------
+# Layout Settings
+# -----------------------------
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+
+# -----------------------------
+# Focus Behavior
+# -----------------------------
+# Move mouse to center when monitor focus changes
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Prevent macOS hidden apps from staying hidden
+automatically-unhide-macos-hidden-apps = true
+
+
+# -----------------------------
+# Keyboard Layout
+# -----------------------------
+[key-mapping]
+preset = 'qwerty'
+
+
+# -----------------------------
+# Window Gaps
+# -----------------------------
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 80
+outer.bottom = 10
+outer.top = 10
+outer.right = 10
+
+
+# -----------------------------
+# Workspace → Monitor Assignment
+# -----------------------------
+[workspace-to-monitor-force-assignment]
+7 = 'secondary'
+8 = 'secondary'
+9 = 'secondary'
+
+
+# -----------------------------
+# Main Keybindings
+# -----------------------------
+[mode.main.binding]
+
+# Change layout
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# Focus windows
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Move windows
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Resize windows
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# Switch workspaces
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# Move window to workspace
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+
+# Join windows into container
+ctrl-alt-h = ['join-with left', 'mode main']
+ctrl-alt-j = ['join-with down', 'mode main']
+ctrl-alt-k = ['join-with up', 'mode main']
+ctrl-alt-l = ['join-with right', 'mode main']
+
+# Workspace switching
+alt-tab = 'workspace-back-and-forth'
+
+# Move workspace to next monitor
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Enter service mode
+alt-shift-semicolon = 'mode service'
+
+
+# -----------------------------
+# Service Mode Keybindings
+# -----------------------------
+[mode.service.binding]
+
+# Reload configuration
+esc = ['reload-config', 'mode main']
+
+# Reset layout
+r = ['flatten-workspace-tree', 'mode main']
+
+# Toggle floating / tiling
+f = ['layout floating tiling', 'mode main']
+
+# Close all windows except current
+backspace = ['close-all-windows-but-current', 'mode main']
+
+# Join windows
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+
+# Volume controls
+down = 'volume down'
+up = 'volume up'
+shift-down = ['volume set 0', 'mode main']
