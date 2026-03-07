@@ -170,6 +170,19 @@ sb_theme_toggle() {
   sketchybar \
     --add item theme_toggle "$1" \
     --set theme_toggle \
+      icon="󰔎" \
+      icon.color="$OX_FG" \
+      icon.font.size=25 \
+      label.drawing=off \
+      padding_left=8 \
+      padding_right=8 \
+      click_script="$PLUGIN_DIR/theme_toggle.sh"
+}
+
+sb_theme_toggle() {
+  sketchybar \
+    --add item theme_toggle "$1" \
+    --set theme_toggle \
       script="$PLUGIN_DIR/theme_toggle.sh" \
       click_script="SENDER=mouse.clicked $PLUGIN_DIR/theme_toggle.sh" \
       icon.color=$OX_FG \

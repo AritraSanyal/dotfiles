@@ -1,28 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CONFIG_DIR="$HOME/.config/sketchybar"
-GLOBALS_FILE="$CONFIG_DIR/globals.sh"
+THEME_FILE="$CONFIG_DIR/.theme"
 
-# Load theme palette variables
-. "$GLOBALS_FILE"
+# Ensure theme file exists
+[[ -f "$THEME_FILE" ]] || echo "transparent" > "$THEME_FILE"
 
-if [[ "$OX_THEME" == "dark" ]]; then
-    ICON="󰔎"
-    NEXT_THEME="light"
+CURRENT_THEME=$(cat "$THEME_FILE")
+
+if [[ "$CURRENT_THEME" == "dark" ]]; then
+  NEXT_THEME="transparent"
+  ICON="󰔎"
 else
-    ICON="󰔎"
-    NEXT_THEME="dark"
+  NEXT_THEME="dark"
+  ICON="󰔎"
 fi
 
 if [[ "$SENDER" == "mouse.clicked" ]]; then
-    if [[ "$NEXT_THEME" == "light" ]]; then
-        sed -i '' 's/^export OX_THEME="dark"/export OX_THEME="light"/' "$GLOBALS_FILE"
-    else
-        sed -i '' 's/^export OX_THEME="light"/export OX_THEME="dark"/' "$GLOBALS_FILE"
-    fi
-
-    sketchybar --reload
-    exit 0
+  echo "$NEXT_THEME" > "$THEME_FILE"
+  sketchybar --reload
+  exit 0
 fi
 
 sketchybar --set theme_toggle icon="$ICON"
