@@ -3,7 +3,7 @@
 export PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 
 # Active theme identifier (persisted for toggling)
-export OX_THEME="light"
+export OX_THEME="dark"
 
 # Dark palette (cyberdream)
 export OX_BG_DARK="0x0016181a"
