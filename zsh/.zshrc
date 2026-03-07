@@ -14,7 +14,7 @@ fi
 eval "$(rbenv init -)"
 
 # Flutter setup
-export PATH="$HOME/development/flutter/bin:$PATH"
+export PATH="$PATH:/opt/homebrew/Caskroom/flutter/latest/flutter/bin"
 
 # Android SDK setup
 export ANDROID_HOME="$HOME/Library/Android/sdk"
