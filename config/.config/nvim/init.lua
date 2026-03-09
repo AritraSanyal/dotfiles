@@ -201,7 +201,13 @@ require('lazy').setup {
       'folke/lazydev.nvim',
     },
     opts = {
-      keymap = { preset = 'default' },
+      keymap = {
+        preset = 'default',
+
+        ['<Tab>'] = { 'select_and_accept', 'fallback' },
+        ['<C-y'] = false, -- disable ctrl+y
+      },
+
       sources = { default = { 'lsp', 'path', 'buffer', 'snippets' } },
       appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = 'normal' },
       fuzzy = {
