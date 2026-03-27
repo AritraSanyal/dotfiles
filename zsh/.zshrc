@@ -42,6 +42,10 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
+# Calude-Antigravity-Proxy
+export ANTHROPIC_BASE_URL="http://localhost:8080"
+export ANTHROPIC_AUTH_TOKEN="test"
+
 # ======================================
 
 # 🧠 Oh My Zsh Setup
@@ -148,4 +152,13 @@ eval "$(starship init zsh)"
 # ✅ End of Configuration
 
 # ======================================
+
+
+# Added by Antigravity
+export PATH="/Users/aritrasanyal/.antigravity/antigravity/bin:$PATH"
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/aritrasanyal/.dart-cli-completion/zsh-config.zsh ]] && . /Users/aritrasanyal/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
 
