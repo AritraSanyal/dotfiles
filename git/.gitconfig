@@ -3,3 +3,5 @@
 	email = aritras2003@gmail.com
 [init]
 	defaultBranch = main
+[core]
+	editor = nvim
