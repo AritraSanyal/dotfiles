@@ -78,7 +78,7 @@ return {
         -- UI FEATURES
         ---------------------------------------------------
         widget_guides = {
-          enabled = false,
+          enabled = true,
         },
 
         closing_tags = {
@@ -166,33 +166,33 @@ return {
       -- WRAP WIDGET PICKER
       -------------------------------------------------------
       local wrap_widgets = {
-        { name = "Container", template = "Container(child: %s)" },
-        { name = "Padding (all)", template = "Padding(padding: EdgeInsets.all(8), child: %s)" },
-        { name = "Padding (symmetric)", template = "Padding(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), child: %s)" },
-        { name = "Padding (only)", template = "Padding(padding: EdgeInsets.only(left: 8), child: %s)" },
-        { name = "Center", template = "Center(child: %s)" },
-        { name = "Column", template = "Column(children: [%s])" },
-        { name = "Row", template = "Row(children: [%s])" },
-        { name = "Expanded", template = "Expanded(child: %s)" },
-        { name = "Flexible", template = "Flexible(child: %s)" },
-        { name = "Builder", template = "Builder(builder: (context) => %s)" },
-        { name = "FutureBuilder", template = "FutureBuilder(future: , builder: (context, snapshot) => %s)" },
-        { name = "StreamBuilder", template = "StreamBuilder(stream: , builder: (context, snapshot) => %s)" },
-        { name = "SafeArea", template = "SafeArea(child: %s)" },
-        { name = "SliverToBoxAdapter", template = "SliverToBoxAdapter(child: %s)" },
-        { name = "Wrap", template = "Wrap(children: [%s])" },
-        { name = "Opacity", template = "Opacity(opacity: 0.5, child: %s)" },
-        { name = "ClipRRect", template = "ClipRRect(borderRadius: BorderRadius.circular(8), child: %s)" },
-        { name = "Card", template = "Card(child: %s)" },
-        { name = "Material", template = "Material(child: %s)" },
+        { name = "Container",             template = "Container(child: %s)" },
+        { name = "Padding (all)",         template = "Padding(padding: EdgeInsets.all(8), child: %s)" },
+        { name = "Padding (symmetric)",   template = "Padding(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), child: %s)" },
+        { name = "Padding (only)",        template = "Padding(padding: EdgeInsets.only(left: 8), child: %s)" },
+        { name = "Center",                template = "Center(child: %s)" },
+        { name = "Column",                template = "Column(children: [%s])" },
+        { name = "Row",                   template = "Row(children: [%s])" },
+        { name = "Expanded",              template = "Expanded(child: %s)" },
+        { name = "Flexible",              template = "Flexible(child: %s)" },
+        { name = "Builder",               template = "Builder(builder: (context) => %s)" },
+        { name = "FutureBuilder",         template = "FutureBuilder(future: , builder: (context, snapshot) => %s)" },
+        { name = "StreamBuilder",         template = "StreamBuilder(stream: , builder: (context, snapshot) => %s)" },
+        { name = "SafeArea",              template = "SafeArea(child: %s)" },
+        { name = "SliverToBoxAdapter",    template = "SliverToBoxAdapter(child: %s)" },
+        { name = "Wrap",                  template = "Wrap(children: [%s])" },
+        { name = "Opacity",               template = "Opacity(opacity: 0.5, child: %s)" },
+        { name = "ClipRRect",             template = "ClipRRect(borderRadius: BorderRadius.circular(8), child: %s)" },
+        { name = "Card",                  template = "Card(child: %s)" },
+        { name = "Material",              template = "Material(child: %s)" },
         { name = "SingleChildScrollView", template = "SingleChildScrollView(child: %s)" },
-        { name = "ListView", template = "ListView(children: [%s])" },
-        { name = "SizedBox", template = "SizedBox(child: %s)" },
-        { name = "ConstrainedBox", template = "ConstrainedBox(constraints: BoxConstraints(), child: %s)" },
-        { name = "AspectRatio", template = "AspectRatio(aspectRatio: 16 / 9, child: %s)" },
-        { name = "FittedBox", template = "FittedBox(fit: BoxFit.contain, child: %s)" },
-        { name = "Stack", template = "Stack(children: [%s])" },
-        { name = "Positioned", template = "Positioned(child: %s)" },
+        { name = "ListView",              template = "ListView(children: [%s])" },
+        { name = "SizedBox",              template = "SizedBox(child: %s)" },
+        { name = "ConstrainedBox",        template = "ConstrainedBox(constraints: BoxConstraints(), child: %s)" },
+        { name = "AspectRatio",           template = "AspectRatio(aspectRatio: 16 / 9, child: %s)" },
+        { name = "FittedBox",             template = "FittedBox(fit: BoxFit.contain, child: %s)" },
+        { name = "Stack",                 template = "Stack(children: [%s])" },
+        { name = "Positioned",            template = "Positioned(child: %s)" },
       }
 
       local function get_visual_selection()
@@ -219,7 +219,8 @@ return {
         local template = picker_choice.template
         local wrapped = string.format(template, selection)
 
-        vim.api.nvim_buf_set_text(0, vim.fn.line("'<") - 1, vim.fn.col("'<") - 1, vim.fn.line("'>") - 1, vim.fn.col("'>"), { wrapped })
+        vim.api.nvim_buf_set_text(0, vim.fn.line("'<") - 1, vim.fn.col("'<") - 1, vim.fn.line("'>") - 1, vim.fn.col("'>"),
+          { wrapped })
       end
 
       map("v", "<leader>fw", function()
@@ -376,14 +377,32 @@ return {
       -------------------------------------------------------
       -- FLUTTER COMMAND KEYMAPS
       -------------------------------------------------------
+      local function flutter_notify(msg)
+        pcall(function()
+          local notify = require("notify")
+          notify(msg, vim.log.levels.INFO, {
+            title = "Flutter",
+            timeout = 3,
+            icon = "🔥",
+          })
+        end)
+      end
+
       map("n", "<leader>fr", "<cmd>FlutterRun<CR>", { desc = "Flutter Run" })
       map("n", "<leader>fD", "<cmd>FlutterDebug<CR>", { desc = "Flutter Debug" })
 
       map("n", "<leader>fh", "<cmd>FlutterReload<CR>", { desc = "Flutter Hot Reload" })
       map("n", "<leader>fR", "<cmd>FlutterRestart<CR>", { desc = "Flutter Hot Restart" })
 
-      map("n", "<leader>fd", "<cmd>FlutterDevices<CR>", { desc = "Flutter Devices" })
-      map("n", "<leader>fe", "<cmd>FlutterEmulators<CR>", { desc = "Flutter Emulators" })
+      map("n", "<leader>fd", function()
+        flutter_notify("Loading Flutter devices...")
+        vim.cmd("FlutterDevices")
+      end, { desc = "Flutter Devices" })
+
+      map("n", "<leader>fe", function()
+        flutter_notify("Loading Flutter emulators...")
+        vim.cmd("FlutterEmulators")
+      end, { desc = "Flutter Emulators" })
 
       map("n", "<leader>fo", "<cmd>FlutterOutlineToggle<CR>", { desc = "Flutter Outline" })
       map("n", "<leader>fl", "<cmd>FlutterLogToggle<CR>", { desc = "Flutter Logs" })
