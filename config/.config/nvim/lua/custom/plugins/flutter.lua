@@ -5,6 +5,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "stevearc/dressing.nvim",
+      "akinsho/toggleterm.nvim",
 
       -- Debugging
       "mfussenegger/nvim-dap",
@@ -48,6 +49,17 @@ return {
       pcall(function()
         capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
       end)
+
+      -------------------------------------------------------
+      -- TOGGLETERM SETUP
+      -------------------------------------------------------
+      require("toggleterm").setup({
+        direction = "float",
+        float_opts = {
+          border = "curved",
+        },
+        hidden = true,
+      })
 
       -------------------------------------------------------
       -- FLUTTER TOOLS SETUP
@@ -388,7 +400,45 @@ return {
         end)
       end
 
-      map("n", "<leader>fr", "<cmd>FlutterRun<CR>", { desc = "Flutter Run" })
+      local FLUTTER_TERM_ID = 1
+
+      local function flutter_run_toggle()
+        local Term = require("toggleterm.terminal")
+        local ui = require("toggleterm.ui")
+        local toggleterm = require("toggleterm")
+
+        local existing = Term.get(FLUTTER_TERM_ID)
+        if existing and existing:is_open() then
+          ui.toggle_ui(FLUTTER_TERM_ID)
+          return
+        end
+
+        local flutter_term = Term.Terminal:new({
+          id = FLUTTER_TERM_ID,
+          cmd = "flutter run",
+          direction = "float",
+          float_opts = { border = "curved" },
+          hidden = true,
+          on_close = function()
+            vim.notify("Flutter stopped", vim.log.levels.INFO, { title = "Flutter" })
+          end,
+        })
+        flutter_term:spawn()
+        ui.toggle_ui(FLUTTER_TERM_ID)
+      end
+
+      local function flutter_quit_toggle()
+        local Term = require("toggleterm.terminal")
+        local existing = Term.get(FLUTTER_TERM_ID)
+        if existing then
+          existing:shutdown()
+        end
+        pcall(function()
+          vim.cmd("FlutterQuit")
+        end)
+      end
+
+      map("n", "<leader>ff", flutter_run_toggle, { desc = "Flutter Run (Toggle Terminal)" })
       map("n", "<leader>fD", "<cmd>FlutterDebug<CR>", { desc = "Flutter Debug" })
 
       map("n", "<leader>fh", "<cmd>FlutterReload<CR>", { desc = "Flutter Hot Reload" })
@@ -407,7 +457,7 @@ return {
       map("n", "<leader>fo", "<cmd>FlutterOutlineToggle<CR>", { desc = "Flutter Outline" })
       map("n", "<leader>fl", "<cmd>FlutterLogToggle<CR>", { desc = "Flutter Logs" })
 
-      map("n", "<leader>fq", "<cmd>FlutterQuit<CR>", { desc = "Flutter Quit" })
+      map("n", "<leader>fq", flutter_quit_toggle, { desc = "Flutter Quit" })
       map("n", "<leader>ft", "<cmd>FlutterDevTools<CR>", { desc = "Flutter DevTools" })
     end,
   },
