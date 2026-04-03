@@ -114,6 +114,10 @@ alias venv="source venv/bin/activate"
 
 alias skre="sketchybar --reload"
 
+# OpenCode
+
+alias oc="opencode"
+
 # Utilities
 
 alias update="brew update && brew upgrade && brew cleanup"
