@@ -12,12 +12,19 @@ export ZSH="$HOME/.oh-my-zsh"
 # --------------------------------------
 # 🍺 Homebrew (must be early)
 # --------------------------------------
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if command -v brew >/dev/null 2>&1; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi  
 
 # --------------------------------------
 # 💎 Ruby (rbenv)
 # --------------------------------------
 eval "$(rbenv init -)"
+export RBENV_ROOT+"$HOME/.rbenv"
+if [ -d "$RBENV_ROOT" ]; then 
+  export PATH="$RBENV_ROOT/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
 
 # --------------------------------------
 # 🐦 Flutter
