@@ -5,6 +5,7 @@ return {
     'MunifTanjim/nui.nvim',
     'rcarriga/nvim-notify',
   },
+
   opts = {
     lsp = {
       override = {
@@ -13,32 +14,32 @@ return {
         ['cmp.entry.get_documentation'] = true,
       },
     },
+
+    notify = {
+      enabled = true,
+      view = "notify",
+    },
+
     presets = {
-      bottom_search = true, -- classic search bar at bottom
-      command_palette = true, -- command palette UI
-      long_message_to_split = true, -- show long messages in a split window
+      bottom_search = true,
+      command_palette = true,
+      long_message_to_split = true,
       inc_rename = false,
       lsp_doc_border = false,
     },
   },
 
   config = function(_, opts)
+    -- ✅ FIX: background highlight
+    vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
+
     require('noice').setup(opts)
 
-    -- 🧠 Keybindings for Noice
     local keymap = vim.keymap.set
-    local opts = { noremap = true, silent = true, desc = '' }
 
-    -- Show message history (like :messages)
     keymap('n', '<leader>nh', '<cmd>Noice history<CR>', { desc = 'Noice History' })
-
-    -- Show all recent notifications
     keymap('n', '<leader>nn', '<cmd>Noice<CR>', { desc = 'Noice Notifications' })
-
-    -- Dismiss all current notifications
     keymap('n', '<leader>nd', '<cmd>Noice dismiss<CR>', { desc = 'Noice Dismiss' })
-
-    -- Show last message quickly (like :messages last)
     keymap('n', '<leader>nl', '<cmd>Noice last<CR>', { desc = 'Noice Last Message' })
   end,
 }
