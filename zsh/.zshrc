@@ -17,13 +17,14 @@ if command -v brew >/dev/null 2>&1; then
 fi  
 
 # --------------------------------------
-# 💎 Ruby (rbenv)
+# 💎 Ruby (rbenv) - FIXED
 # --------------------------------------
-eval "$(rbenv init -)"
-export RBENV_ROOT+"$HOME/.rbenv"
-if [ -d "$RBENV_ROOT" ]; then 
+
+export RBENV_ROOT="$HOME/.rbenv"
+
+if [ -d "$RBENV_ROOT" ]; then
   export PATH="$RBENV_ROOT/bin:$PATH"
-  eval "$(rbenv init -)"
+  eval "$(rbenv init - zsh)"
 fi
 
 # --------------------------------------
