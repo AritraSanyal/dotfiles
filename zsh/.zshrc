@@ -17,9 +17,8 @@ if command -v brew >/dev/null 2>&1; then
 fi  
 
 # --------------------------------------
-# 💎 Ruby (rbenv) - FIXED
+# 💎 Ruby (rbenv)
 # --------------------------------------
-
 export RBENV_ROOT="$HOME/.rbenv"
 
 if [ -d "$RBENV_ROOT" ]; then
@@ -48,7 +47,7 @@ export JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 # --------------------------------------
-# 🚀 Antigravity (only once)
+# 🚀 Antigravity
 # --------------------------------------
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
@@ -59,9 +58,8 @@ export ANTHROPIC_BASE_URL="http://localhost:8080"
 export ANTHROPIC_AUTH_TOKEN="test"
 
 # --------------------------------------
-# 🦀 Rust (CORRECT WAY)
+# 🦀 Rust (correct setup)
 # --------------------------------------
-# This loads cargo, rustc into PATH
 . "$HOME/.cargo/env"
 
 # ======================================
@@ -79,13 +77,52 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # ======================================
-# 🧰 Custom Functions
+# 🧰 Custom Functions (FZF + Dev Tools)
 # ======================================
 
-# 🔍 Fuzzy directory change
-fcd() {
+# Remove conflicting aliases from Oh My Zsh
+unalias gcb 2>/dev/null
+unalias glog 2>/dev/null
+unalias fd 2>/dev/null
+
+# 🔍 Open file in nvim
+vf() {
+  local file
+  file=$(fzf)
+  [ -n "$file" ] && nvim "$file"
+}
+
+# 🌿 Git branch switcher
+gcb() {
+  local branch
+  branch=$(git branch --all | sed 's/^..//' | fzf)
+  [ -n "$branch" ] && git checkout "$branch"
+}
+
+# 📜 Git log viewer
+glog() {
+  git log --oneline --graph --decorate --all | fzf
+}
+
+# 💀 Kill process safely
+fkill() {
+  local pid
+  pid=$(ps aux | fzf | awk '{print $2}')
+  [ -n "$pid" ] && kill -9 "$pid"
+}
+
+# 📁 Fuzzy directory jump (fd)
+fd() {
   local dir
-  dir=$(find . -type d 2>/dev/null | fzf) && cd "$dir" || return
+  dir=$(command fd -t d 2>/dev/null | fzf)
+  [ -n "$dir" ] && cd "$dir"
+}
+
+# 🔎 Search project → open in nvim
+vgrep() {
+  local file
+  file=$(rg --files | fzf)
+  [ -n "$file" ] && nvim "$file"
 }
 
 # ======================================
@@ -98,7 +135,7 @@ alias zrc="nvim ~/.zshrc"
 alias src="source ~/.zshrc"
 alias rz="exec zsh"
 
-# Listing (using eza)
+# Listing
 alias ls="eza"
 alias ll="eza -lh"
 alias la="eza -la"
@@ -106,7 +143,7 @@ alias la="eza -la"
 # Git UI
 alias lg="lazygit"
 
-# Flutter shortcuts
+# Flutter
 alias fr="flutter run"
 alias fb="flutter build"
 alias fcl="flutter clean"
@@ -115,6 +152,9 @@ alias fp="flutter pub get"
 # Python
 alias py="python3"
 alias venv="source venv/bin/activate"
+
+# Clipboard
+alias clip="pbpaste"
 
 # SketchyBar
 alias skre="sketchybar --reload"
