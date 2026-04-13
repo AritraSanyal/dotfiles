@@ -15,14 +15,14 @@ return {
 
   -- In-editor markdown rendering
   'MeanderingProgrammer/render-markdown.nvim',
-  event = { 'BufEnter*.md', 'CmdlineEnter' },
+  ft = 'markdown',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-mini/mini.nvim',
   },
   opts = {
     render = {
-      enabled = true,
+      enabled = false,
       mix_signs = true,
       max_width = nil,
       max_priority = 1000,
@@ -155,7 +155,7 @@ return {
         amount = 1,
       },
       win_options = {
-        conceallevel = 0,
+        conceallevel = 2,
         concealcursor = vim.opt.concealcursor:get(),
       },
     },
@@ -164,7 +164,7 @@ return {
         level = 2,
       },
       raw = {
-        enable = false,
+        enable = true,
         filetypes = {},
         exclude_filetypes = {},
       },
