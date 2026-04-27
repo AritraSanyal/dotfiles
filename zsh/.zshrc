@@ -16,6 +16,8 @@ if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi  
 
+export HOMEBREW_GITHUB_API_TOKEN=""
+
 # --------------------------------------
 # 💎 Ruby (rbenv)
 # --------------------------------------
@@ -56,6 +58,11 @@ export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 # --------------------------------------
 export ANTHROPIC_BASE_URL="http://localhost:8080"
 export ANTHROPIC_AUTH_TOKEN="test"
+
+# --------------------------------------
+# ⚙️ MacPorts
+# --------------------------------------
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
 # --------------------------------------
 # 🦀 Rust (correct setup)
@@ -110,12 +117,17 @@ fkill() {
   pid=$(ps aux | fzf | awk '{print $2}')
   [ -n "$pid" ] && kill -9 "$pid"
 }
-
-# 📁 Fuzzy directory jump (fd)
-fd() {
+# Fuzzy directory jump
+fj() {
+  # Use 'command' to ensure we hit the binary, not the function
   local dir
-  dir=$(command fd -t d 2>/dev/null | fzf)
-  [ -n "$dir" ] && cd "$dir"
+  dir=$(command fd -t d 2>/dev/null | fzf --height 40% --reverse)
+  
+  if [ -n "$dir" ]; then
+    cd "$dir" || return
+    # This part is optional: it clears the line and shows where you landed
+    zle && zle reset-prompt 
+  fi
 }
 
 # 🔎 Search project → open in nvim
@@ -197,3 +209,4 @@ eval "$(starship init zsh)"
 # ======================================
 # ✅ End of Configuration
 # ======================================
+export PATH="/Library/TeX/texbin:$PATH"
