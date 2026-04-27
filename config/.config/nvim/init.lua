@@ -59,6 +59,9 @@ map('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
 map('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 map('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 map('i', 'jk', '<Esc>', { desc = 'Exit Insert mode with jk' })
+map('n', '<leader>mr', function()
+  require('render-markdown').toggle()
+end, { desc = 'Toggle Markdown Render' })
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
@@ -137,9 +140,10 @@ require('lazy').setup {
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'j-hui/fidget.nvim',                        opts = {} },
       { 'folke/lazydev.nvim',                       ft = 'lua',   opts = {} },
+      'saghen/blink.cmp',
     },
     config = function()
-      local servers = { 'lua_ls', 'bashls', 'pyright' }
+      local servers = { 'lua_ls', 'bashls', 'pyright', 'texlab' }
 
       require('mason').setup()
       require('mason-tool-installer').setup { ensure_installed = servers }
@@ -148,7 +152,8 @@ require('lazy').setup {
         ensure_installed = servers,
         handlers = {
           function(server_name)
-            local config = vim.lsp.config {
+            local capabilities = require('blink.cmp').get_lsp_capabilities()
+            require('lspconfig')[server_name].setup {
               on_attach = function(_, bufnr)
                 local map = function(keys, func, desc)
                   if desc then desc = 'LSP: ' .. desc end
@@ -160,10 +165,9 @@ require('lazy').setup {
                 map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                 map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
               end,
-              capabilities = vim.lsp.protocol.make_client_capabilities(),
+              capabilities = capabilities,
               settings = {},
             }
-            vim.lsp.start(config, { name = server_name })
           end,
         },
       }
@@ -197,21 +201,30 @@ require('lazy').setup {
     'saghen/blink.cmp',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'L3MON4D3/LuaSnip',
+      {
+        'L3MON4D3/LuaSnip',
+        version = 'v2.*',
+        config = function()
+          require('luasnip.loaders.from_lua').load { paths = { './snippets' } }
+        end,
+      },
       'folke/lazydev.nvim',
     },
     opts = {
       keymap = {
         preset = 'default',
 
-        ['<Tab>'] = { 'select_and_accept', 'fallback' },
-        ['<C-y'] = false, -- disable ctrl+y
+        ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+        ['<C-y>'] = false, -- disable ctrl+y
       },
+
+      snippets = { preset = 'luasnip' },
 
       sources = { default = { 'lsp', 'path', 'buffer', 'snippets' } },
       appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = 'normal' },
       fuzzy = {
-        implementation = "lua", -- 👈 disables the Rust build warning
+        implementation = 'lua', -- 👈 disables the Rust build warning
       },
     },
   },
@@ -219,17 +232,100 @@ require('lazy').setup {
   -----------------------------------------------------------
   -- UI Enhancements
   -----------------------------------------------------------
+  -- {
+  --   'ellisonleao/gruvbox.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     require('gruvbox').setup {
+  --       contrast = 'hard',
+  --       transparent_mode = false,
+  --     }
+  --     vim.o.background = 'dark'
+  --     vim.cmd.colorscheme 'gruvbox'
+  --   end,
+  -- },
+
+  -- catpuchin
   {
-    'ellisonleao/gruvbox.nvim',
+    "catppuccin/nvim",
+    name = "catppuccin",
     priority = 1000,
     config = function()
-      require('gruvbox').setup {
-        contrast = 'hard',
-        transparent_mode = false,
-      }
-      vim.o.background = 'dark'
-      vim.cmd.colorscheme 'gruvbox'
+      require("catppuccin").setup({
+        flavour = "auto", -- latte, frappe, macchiato, mocha
+        background = {    -- :h background
+          light = "latte",
+          dark = "mocha",
+        },
+        transparent_background = false, -- disables setting the background color.
+        float = {
+          transparent = false,          -- enable transparent floating windows
+          solid = false,                -- use solid styling for floating windows, see |winborder|
+        },
+        term_colors = false,            -- sets terminal colors (e.g. `g:terminal_color_0`)
+        dim_inactive = {
+          enabled = false,              -- dims the background color of inactive window
+          shade = "dark",
+          percentage = 0.15,            -- percentage of the shade to apply to the inactive window
+        },
+        no_italic = false,              -- Force no italic
+        no_bold = false,                -- Force no bold
+        no_underline = false,           -- Force no underline
+        styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { "italic" },      -- Change the style of comments
+          conditionals = { "italic" },
+          loops = {},
+          functions = {},
+          keywords = {},
+          strings = {},
+          variables = {},
+          numbers = {},
+          booleans = {},
+          properties = {},
+          types = {},
+          operators = {},
+          -- miscs = {}, -- Uncomment to turn off hard-coded styles
+        },
+        lsp_styles = { -- Handles the style of specific lsp hl groups (see `:h lsp-highlight`).
+          virtual_text = {
+            errors = { "italic" },
+            hints = { "italic" },
+            warnings = { "italic" },
+            information = { "italic" },
+            ok = { "italic" },
+          },
+          underlines = {
+            errors = { "underline" },
+            hints = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+            ok = { "underline" },
+          },
+          inlay_hints = {
+            background = true,
+          },
+        },
+        color_overrides = {},
+        custom_highlights = {},
+        default_integrations = true,
+        auto_integrations = false,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          notify = false,
+          mini = {
+            enabled = true,
+            indentscope_color = "",
+          },
+          -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+        },
+      })
+
+      -- setup must be called before loading
+      vim.cmd.colorscheme "catppuccin-nvim"
     end,
+
   },
 
   {
