@@ -13,13 +13,15 @@ return {
     end,
   },
 
-  -- In-editor markdown rendering
+  -- In-editor markdown rendering -- Toggle
   'MeanderingProgrammer/render-markdown.nvim',
   ft = 'markdown',
+
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
     'nvim-mini/mini.nvim',
   },
+
   opts = {
     render = {
       enabled = false,
