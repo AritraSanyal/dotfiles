@@ -108,16 +108,53 @@ require('lazy').setup {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
+      'nvim-telescope/telescope-file-browser.nvim',
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      local telescope = require 'telescope'
+      local telescope = require('telescope')
+      local fb_actions = telescope.extensions.file_browser.actions
+
+      telescope.setup {
+        extensions = {
+          ['ui-select'] = {
+            require('telescope.themes').get_dropdown(),
+          },
+          file_browser = {
+            theme = 'ivy',
+            hijack_netrw = true,
+          },
+        },
+      }
+
+      -- Load extensions
+      pcall(telescope.load_extension, 'fzf')
+      pcall(telescope.load_extension, 'ui-select')
+      pcall(telescope.load_extension, 'file_browser')
+      pcall(telescope.load_extension, 'flutter')
+
+      -- 🛰️ Keymaps
       local builtin = require 'telescope.builtin'
-      telescope.setup()
+      local map = vim.keymap.set
+
       map('n', '<leader>sf', builtin.find_files, { desc = 'Find files' })
       map('n', '<leader>sg', builtin.live_grep, { desc = 'Live grep' })
       map('n', '<leader>sb', builtin.buffers, { desc = 'Find buffers' })
       map('n', '<leader>sh', builtin.help_tags, { desc = 'Find help' })
+
+      -- 🗂️ File Browser Keymaps
+      map('n', '<leader>e', function()
+        telescope.extensions.file_browser.file_browser({
+          path = '%:p:h',
+          select_buffer = true,
+        })
+      end, { desc = 'Open File Browser (current file dir)' })
+
+      map('n', '<leader>E', function()
+        telescope.extensions.file_browser.file_browser({
+          path = vim.loop.cwd(),
+        })
+      end, { desc = 'Open File Browser (CWD)' })
     end,
   },
 
