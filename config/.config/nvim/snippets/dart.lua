@@ -341,5 +341,7 @@ local dart_snippets = {
   }),
 }
 
-require("luasnip").add_snippets("dart", dart_snippets)
-require("luasnip").add_snippets("flutter", flutter_snippets)
+return {
+  dart = dart_snippets,
+  flutter = flutter_snippets,
+}

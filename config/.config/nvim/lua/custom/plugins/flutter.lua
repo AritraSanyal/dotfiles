@@ -140,13 +140,6 @@ return {
       end)
 
       -------------------------------------------------------
-      -- SNIPPETS (LuaSnip)
-      -------------------------------------------------------
-      pcall(function()
-        require("luasnip.loaders.from_lua").load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
-      end)
-
-      -------------------------------------------------------
       -- REFACTORING
       -------------------------------------------------------
       require("refactoring").setup({
