@@ -62,6 +62,8 @@ map('i', 'jk', '<Esc>', { desc = 'Exit Insert mode with jk' })
 map('n', '<leader>mr', function()
   require('render-markdown').toggle()
 end, { desc = 'Toggle Markdown Render' })
+
+
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
@@ -144,10 +146,8 @@ require('lazy').setup {
     },
     config = function()
       local servers = { 'lua_ls', 'bashls', 'pyright', 'texlab' }
-
       require('mason').setup()
       require('mason-tool-installer').setup { ensure_installed = servers }
-
       require('mason-lspconfig').setup {
         ensure_installed = servers,
         handlers = {
@@ -173,6 +173,7 @@ require('lazy').setup {
       }
     end,
   },
+
 
   -----------------------------------------------------------
   -- Formatter
@@ -206,6 +207,7 @@ require('lazy').setup {
         version = 'v2.*',
         config = function()
           require('luasnip.loaders.from_lua').load { paths = { './snippets' } }
+          require('luasnip.loaders.from_vscode').lazy_load()
         end,
       },
       'folke/lazydev.nvim',
