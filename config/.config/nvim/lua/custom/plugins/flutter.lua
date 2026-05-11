@@ -5,11 +5,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "stevearc/dressing.nvim",
-      "akinsho/toggleterm.nvim",
-
-      -- Debugging
-      "mfussenegger/nvim-dap",
-      "theHamsta/nvim-dap-virtual-text",
 
       -- Optional integrations
       "nvim-telescope/telescope.nvim",
@@ -20,28 +15,6 @@ return {
 
     config = function()
       -------------------------------------------------------
-      -- DAP SETUP (Flutter / Dart)
-      -------------------------------------------------------
-      local dap = require("dap")
-      require("nvim-dap-virtual-text").setup()
-
-      -------------------------------------------------------
-      -- DEBUGGER KEYMAPS
-      -------------------------------------------------------
-      local map = vim.keymap.set
-
-      map("n", "<F5>", dap.continue, { desc = "DAP Continue" })
-      map("n", "<F10>", dap.step_over, { desc = "DAP Step Over" })
-      map("n", "<F11>", dap.step_into, { desc = "DAP Step Into" })
-      map("n", "<F12>", dap.step_out, { desc = "DAP Step Out" })
-
-      map("n", "<leader>b", dap.toggle_breakpoint, { desc = "DAP Toggle Breakpoint" })
-
-      map("n", "<leader>B", function()
-        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end, { desc = "DAP Conditional Breakpoint" })
-
-      -------------------------------------------------------
       -- LSP CAPABILITIES (Blink CMP)
       -------------------------------------------------------
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -49,17 +22,6 @@ return {
       pcall(function()
         capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
       end)
-
-      -------------------------------------------------------
-      -- TOGGLETERM SETUP
-      -------------------------------------------------------
-      require("toggleterm").setup({
-        direction = "float",
-        float_opts = {
-          border = "curved",
-        },
-        hidden = true,
-      })
 
       -------------------------------------------------------
       -- FLUTTER TOOLS SETUP
@@ -142,6 +104,8 @@ return {
       -------------------------------------------------------
       -- REFACTORING
       -------------------------------------------------------
+      local map = vim.keymap.set
+
       require("refactoring").setup({
         prompt_func_return_type = {
           dart = true,

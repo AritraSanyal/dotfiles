@@ -2,6 +2,8 @@
 -- Neovim Configuration (Kickstart + Lazy + Custom)
 -----------------------------------------------------------
 
+---@diagnostic disable: undefined-global
+
 -- Bootstrap Lazy.nvim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -15,6 +17,43 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- Toggle Inlay Hints Function
+local toggle_inlay_hints = function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end
+
+-- Toggle Virtual Text Function
+local toggle_virtual_text = function()
+  local current_value = vim.diagnostic.config().virtual_text
+  if current_value then
+    vim.diagnostic.config({ virtual_text = false })
+  else
+    vim.diagnostic.config({ virtual_text = true })
+  end
+end
+
+-- Smart Buffer Close Function
+local close_buffer = function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+
+  if #buffers <= 1 then
+    vim.cmd('bd')
+    vim.cmd('Dashboard')
+  else
+    vim.cmd('bd')
+  end
+end
+
+-- Close All Buffers Function
+local close_all_buffers = function()
+  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  for _, buf in ipairs(buffers) do
+    vim.cmd('bd ' .. buf.bufnr)
+  end
+  vim.cmd('Dashboard')
+end
 
 -----------------------------------------------------------
 -- General Settings
@@ -47,9 +86,31 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.inccommand = 'split'
 
 -----------------------------------------------------------
+-- Diagnostic
+-----------------------------------------------------------
+vim.diagnostic.config({
+  virtual_text = {
+    spacing = 4,
+    prefix = ' 󰄮', -- Wrap this in single or double quotes
+    source = "if_many",
+  },
+  update_in_insert = false,
+  severity_sort = true, -- Changed 'severity' to 'severity_sort'
+})
+
+-----------------------------------------------------------
 -- Keymaps
 -----------------------------------------------------------
 local map = vim.keymap.set
+-- keymap to toggle vitrual text
+vim.keymap.set('n', '<leader>tv', toggle_virtual_text, { desc = 'Toggle Diagnostic Virtual Text' })
+-- KeyMap to toggle Inlay hints manually
+map('n', '<leader>th', toggle_inlay_hints, { desc = "Toggle Inlay Hints" })
+-- KeyMap to close buffer
+map('n', '<leader>bd', close_buffer, { desc = 'Close Buffer' })
+-- KeyMap to close all buffers
+map('n', '<leader>ba', close_all_buffers, { desc = 'Close All Buffers' })
+
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostics list' })
@@ -67,6 +128,8 @@ end, { desc = 'Toggle Markdown Render' })
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
+
+
 
 -- Highlight text on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -159,16 +222,6 @@ require('lazy').setup {
   },
 
   -----------------------------------------------------------
-  -- Git Signs
-  -----------------------------------------------------------
-  {
-    'lewis6991/gitsigns.nvim',
-    config = function()
-      require('gitsigns').setup()
-    end,
-  },
-
-  -----------------------------------------------------------
   -- LSP + Mason (Modern API)
   -----------------------------------------------------------
   {
@@ -178,7 +231,6 @@ require('lazy').setup {
       { 'williamboman/mason-lspconfig.nvim' },
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
       { 'j-hui/fidget.nvim',                        opts = {} },
-      { 'folke/lazydev.nvim',                       ft = 'lua',   opts = {} },
       'saghen/blink.cmp',
     },
     config = function()
@@ -189,6 +241,10 @@ require('lazy').setup {
         ensure_installed = servers,
         handlers = {
           function(server_name)
+            -- rustaceanvim handles rust_analyzer setup
+            if server_name == 'rust_analyzer' then
+              return
+            end
             local capabilities = require('blink.cmp').get_lsp_capabilities()
             require('lspconfig')[server_name].setup {
               on_attach = function(_, bufnr)
@@ -390,5 +446,5 @@ require('lazy').setup {
 }
 
 -----------------------------------------------------------
--- Done
+-- HEHE
 -----------------------------------------------------------
