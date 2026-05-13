@@ -113,7 +113,7 @@ map('n', '<leader>ba', close_all_buffers, { desc = 'Close All Buffers' })
 
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
-map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostics list' })
+map('n', '<leader>sd', vim.diagnostic.setloclist, { desc = 'Search Diagnostics list' })
 map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 map('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
 map('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
@@ -204,6 +204,7 @@ require('lazy').setup {
       map('n', '<leader>sg', builtin.live_grep, { desc = 'Live grep' })
       map('n', '<leader>sb', builtin.buffers, { desc = 'Find buffers' })
       map('n', '<leader>sh', builtin.help_tags, { desc = 'Find help' })
+      map('n', '<leader>sr', builtin.resume, { desc = 'Search Resume' })
 
       -- 🗂️ File Browser Keymaps
       map('n', '<leader>e', function()

@@ -82,6 +82,18 @@ return {
         -- LSP (dartls managed internally)
         ---------------------------------------------------
         lsp = {
+          on_attach = function(_, bufnr)
+            local map = function(keys, func, desc)
+              if desc then desc = 'LSP: ' .. desc end
+              vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+            end
+            map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+            map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+            map('K', vim.lsp.buf.hover, 'Hover Documentation')
+            map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+            -- Note: <leader>ca and <leader>fc both work for code actions now
+            map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          end,
           capabilities = capabilities,
 
           settings = {
@@ -165,22 +177,13 @@ return {
       }
 
       local function get_visual_selection()
-        local s_start = vim.fn.getpos("'<")
-        local s_end = vim.fn.getpos("'>")
-        local start_row = s_start[2]
-        local start_col = s_start[3]
-        local end_row = s_end[2]
-        local end_col = s_end[3]
-        local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
-        if #lines == 0 then return "" end
-        lines[#lines] = string.sub(lines[#lines], 1, end_col - 1)
-        lines[1] = string.sub(lines[1], start_col)
-        return table.concat(lines, "\n")
+        -- Ensure we are getting the latest marks
+        vim.cmd('noau normal! "vy"')
+        return vim.fn.getreg('v')
       end
 
-      local function wrap_with_widget(picker_choice)
-        local selection = get_visual_selection()
-        if selection == "" then
+      local function wrap_with_widget(picker_choice, selection)
+        if not selection or selection == "" then
           vim.notify("No selection found", vim.log.levels.WARN)
           return
         end
@@ -188,11 +191,21 @@ return {
         local template = picker_choice.template
         local wrapped = string.format(template, selection)
 
-        vim.api.nvim_buf_set_text(0, vim.fn.line("'<") - 1, vim.fn.col("'<") - 1, vim.fn.line("'>") - 1, vim.fn.col("'>"),
-          { wrapped })
+        -- Replace the visual selection with the wrapped version
+        -- We use 'gv' to re-select and then 'p' to paste
+        vim.fn.setreg('v', wrapped)
+        vim.cmd('normal! gv"vp')
+
+        -- Format the code if conform is available
+        local ok, conform = pcall(require, "conform")
+        if ok then
+          conform.format({ lsp_fallback = true, timeout_ms = 500 })
+        end
       end
 
       map("v", "<leader>fw", function()
+        local selection = get_visual_selection()
+
         local telescope = require("telescope.pickers")
         local finders = require("telescope.finders")
         local sorters = require("telescope.sorters")
@@ -214,9 +227,9 @@ return {
           sorter = sorters.get_generic_fuzzy_sorter(),
           attach_mappings = function(prompt_bufnr, map)
             actions.select_default:replace(function()
-              local selection = action_state.get_selected_entry()
+              local selected_entry = action_state.get_selected_entry()
               actions.close(prompt_bufnr)
-              wrap_with_widget(selection.value)
+              wrap_with_widget(selected_entry.value, selection)
             end)
             return true
           end,
@@ -232,7 +245,17 @@ return {
         if test_name and test_name ~= "" then
           cmd = cmd .. " --name " .. vim.fn.shellescape(test_name)
         end
-        vim.cmd("terminal " .. cmd)
+
+        local Terminal = require("toggleterm.terminal").Terminal
+        local test_term = Terminal:new({
+          cmd = cmd,
+          direction = "horizontal",
+          close_on_exit = false,
+          on_open = function(term)
+            vim.cmd("startinsert!")
+          end,
+        })
+        test_term:toggle()
       end
 
       local function find_flutter_tests()
@@ -311,37 +334,12 @@ return {
       -- ENHANCED CODE ACTIONS (Telescope)
       -------------------------------------------------------
       map("n", "<leader>fc", function()
-        local telescope = require("telescope.builtin")
-        telescope.lsp_code_actions({
-          show_delay = 200,
-        })
+        vim.lsp.buf.code_action()
       end, { desc = "Flutter: Code Actions" })
 
       map("v", "<leader>fc", function()
-        local telescope = require("telescope.builtin")
-        telescope.lsp_code_actions({
-          show_delay = 200,
-        })
+        vim.lsp.buf.code_action()
       end, { desc = "Flutter: Code Actions (visual)" })
-
-      map("n", "<leader>fro", function()
-        local telescope = require("telescope.builtin")
-        telescope.lsp_references()
-      end, { desc = "Flutter: Find References" })
-
-      map("n", "<leader>fgd", function()
-        local telescope = require("telescope.builtin")
-        telescope.lsp_definitions()
-      end, { desc = "Flutter: Goto Definition" })
-
-      map("n", "<leader>fgi", function()
-        local telescope = require("telescope.builtin")
-        telescope.lsp_implementations()
-      end, { desc = "Flutter: Goto Implementation" })
-
-      map("n", "<leader>fty", function()
-        vim.lsp.buf.hover()
-      end, { desc = "Flutter: Type/Hover Info" })
 
       -------------------------------------------------------
       -- FLUTTER COMMAND KEYMAPS
@@ -360,28 +358,25 @@ return {
       local FLUTTER_TERM_ID = 1
 
       local function flutter_run_toggle()
-        local Term = require("toggleterm.terminal")
-        local ui = require("toggleterm.ui")
         local toggleterm = require("toggleterm")
+        local Term = require("toggleterm.terminal")
 
         local existing = Term.get(FLUTTER_TERM_ID)
-        if existing and existing:is_open() then
-          ui.toggle_ui(FLUTTER_TERM_ID)
-          return
+        if existing then
+          existing:toggle()
+        else
+          local flutter_term = Term.Terminal:new({
+            id = FLUTTER_TERM_ID,
+            cmd = "flutter run",
+            direction = "float",
+            float_opts = { border = "curved" },
+            hidden = false, -- Open immediately on creation
+            on_exit = function()
+              vim.notify("Flutter stopped", vim.log.levels.INFO, { title = "Flutter" })
+            end,
+          })
+          flutter_term:toggle()
         end
-
-        local flutter_term = Term.Terminal:new({
-          id = FLUTTER_TERM_ID,
-          cmd = "flutter run",
-          direction = "float",
-          float_opts = { border = "curved" },
-          hidden = true,
-          on_close = function()
-            vim.notify("Flutter stopped", vim.log.levels.INFO, { title = "Flutter" })
-          end,
-        })
-        flutter_term:spawn()
-        ui.toggle_ui(FLUTTER_TERM_ID)
       end
 
       local function flutter_quit_toggle()
@@ -395,11 +390,41 @@ return {
         end)
       end
 
+      local function flutter_reload()
+        local Term = require("toggleterm.terminal")
+        local existing = Term.get(FLUTTER_TERM_ID)
+        if existing then
+          existing:send("r")
+          flutter_notify("Hot Reload Sent")
+        else
+          vim.cmd("FlutterReload")
+        end
+      end
+
+      local function flutter_restart()
+        local Term = require("toggleterm.terminal")
+        local existing = Term.get(FLUTTER_TERM_ID)
+        if existing then
+          existing:send("R")
+          flutter_notify("Hot Restart Sent")
+        else
+          vim.cmd("FlutterRestart")
+        end
+      end
+
       map("n", "<leader>ff", flutter_run_toggle, { desc = "Flutter Run (Toggle Terminal)" })
       map("n", "<leader>fD", "<cmd>FlutterDebug<CR>", { desc = "Flutter Debug" })
 
-      map("n", "<leader>fh", "<cmd>FlutterReload<CR>", { desc = "Flutter Hot Reload" })
-      map("n", "<leader>fR", "<cmd>FlutterRestart<CR>", { desc = "Flutter Hot Restart" })
+      -- Hot Reload on Save
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        pattern = "*.dart",
+        callback = function()
+          flutter_reload()
+        end,
+        desc = "Auto Hot Reload Flutter on save",
+      })
+
+      map("n", "<leader>fR", flutter_restart, { desc = "Flutter Hot Restart" })
 
       map("n", "<leader>fd", function()
         flutter_notify("Loading Flutter devices...")
