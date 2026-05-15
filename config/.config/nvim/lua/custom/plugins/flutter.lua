@@ -355,7 +355,7 @@ return {
         end)
       end
 
-      local FLUTTER_TERM_ID = 1
+      local FLUTTER_TERM_ID = 100
 
       local function flutter_run_toggle()
         local toggleterm = require("toggleterm")
