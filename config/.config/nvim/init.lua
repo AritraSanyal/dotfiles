@@ -301,7 +301,8 @@ require('lazy').setup {
   -- Autocompletion
   -----------------------------------------------------------
   {
-    'saghen/blink.cmp',
+    'Saghen/blink.cmp',
+    build = 'cargo build --release',
     dependencies = {
       'rafamadriz/friendly-snippets',
       {
@@ -327,9 +328,7 @@ require('lazy').setup {
 
       sources = { default = { 'lsp', 'path', 'buffer', 'snippets' } },
       appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = 'normal' },
-      fuzzy = {
-        implementation = 'lua', -- 👈 disables the Rust build warning
-      },
+      fuzzy = { implementation = "prefer_rust" },
     },
   },
 

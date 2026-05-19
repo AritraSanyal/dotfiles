@@ -11,17 +11,16 @@ return {
 
       -- Refactoring
       "ThePrimeagen/refactoring.nvim",
+
+      -- Completion
+      "saghen/blink.cmp",
     },
 
     config = function()
       -------------------------------------------------------
       -- LSP CAPABILITIES (Blink CMP)
       -------------------------------------------------------
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-      pcall(function()
-        capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-      end)
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       -------------------------------------------------------
       -- FLUTTER TOOLS SETUP
@@ -356,9 +355,31 @@ return {
       end
 
       local FLUTTER_TERM_ID = 100
+      local FLUTTER_PREVIEW_TERM_ID = 101
+      local FLUTTER_ATTACH_TERM_ID = 102
+
+      local function flutter_preview_toggle()
+        local Term = require("toggleterm.terminal")
+
+        local existing = Term.get(FLUTTER_PREVIEW_TERM_ID)
+        if existing then
+          existing:toggle()
+        else
+          local flutter_term = Term.Terminal:new({
+            id = FLUTTER_PREVIEW_TERM_ID,
+            cmd = "flutter widget-preview start",
+            direction = "float",
+            float_opts = { border = "curved" },
+            hidden = false, -- Open immediately on creation
+            on_exit = function()
+              vim.notify("Flutter Preview stopped", vim.log.levels.INFO, { title = "Flutter" })
+            end,
+          })
+          flutter_term:toggle()
+        end
+      end
 
       local function flutter_run_toggle()
-        local toggleterm = require("toggleterm")
         local Term = require("toggleterm.terminal")
 
         local existing = Term.get(FLUTTER_TERM_ID)
@@ -379,11 +400,36 @@ return {
         end
       end
 
+      local function flutter_attach_toggle()
+        local Term = require("toggleterm.terminal")
+
+        local existing = Term.get(FLUTTER_ATTACH_TERM_ID)
+        if existing then
+          existing:toggle()
+        else
+          local flutter_term = Term.Terminal:new({
+            id = FLUTTER_ATTACH_TERM_ID,
+            cmd = "flutter attach",
+            direction = "float",
+            float_opts = { border = "curved" },
+            hidden = false,
+            on_exit = function()
+              vim.notify("Flutter Detached", vim.log.levels.INFO, { title = "Flutter" })
+            end,
+          })
+          flutter_term:toggle()
+        end
+      end
+
       local function flutter_quit_toggle()
         local Term = require("toggleterm.terminal")
-        local existing = Term.get(FLUTTER_TERM_ID)
-        if existing then
-          existing:shutdown()
+        local run_term = Term.get(FLUTTER_TERM_ID)
+        if run_term then
+          run_term:shutdown()
+        end
+        local attach_term = Term.get(FLUTTER_ATTACH_TERM_ID)
+        if attach_term then
+          attach_term:shutdown()
         end
         pcall(function()
           vim.cmd("FlutterQuit")
@@ -392,10 +438,21 @@ return {
 
       local function flutter_reload()
         local Term = require("toggleterm.terminal")
-        local existing = Term.get(FLUTTER_TERM_ID)
-        if existing then
-          existing:send("r")
-          flutter_notify("Hot Reload Sent")
+        local run_term = Term.get(FLUTTER_TERM_ID)
+        local attach_term = Term.get(FLUTTER_ATTACH_TERM_ID)
+
+        if run_term and run_term:is_open() then
+          run_term:send("r")
+          flutter_notify("Hot Reload Sent (Run)")
+        elseif attach_term and attach_term:is_open() then
+          attach_term:send("r")
+          flutter_notify("Hot Reload Sent (Attach)")
+        elseif run_term then
+          run_term:send("r")
+          flutter_notify("Hot Reload Sent (Run Background)")
+        elseif attach_term then
+          attach_term:send("r")
+          flutter_notify("Hot Reload Sent (Attach Background)")
         else
           vim.cmd("FlutterReload")
         end
@@ -403,16 +460,29 @@ return {
 
       local function flutter_restart()
         local Term = require("toggleterm.terminal")
-        local existing = Term.get(FLUTTER_TERM_ID)
-        if existing then
-          existing:send("R")
-          flutter_notify("Hot Restart Sent")
+        local run_term = Term.get(FLUTTER_TERM_ID)
+        local attach_term = Term.get(FLUTTER_ATTACH_TERM_ID)
+
+        if run_term and run_term:is_open() then
+          run_term:send("R")
+          flutter_notify("Hot Restart Sent (Run)")
+        elseif attach_term and attach_term:is_open() then
+          attach_term:send("R")
+          flutter_notify("Hot Restart Sent (Attach)")
+        elseif run_term then
+          run_term:send("R")
+          flutter_notify("Hot Restart Sent (Run Background)")
+        elseif attach_term then
+          attach_term:send("R")
+          flutter_notify("Hot Restart Sent (Attach Background)")
         else
           vim.cmd("FlutterRestart")
         end
       end
 
       map("n", "<leader>ff", flutter_run_toggle, { desc = "Flutter Run (Toggle Terminal)" })
+      map("n", "<leader>fa", flutter_attach_toggle, { desc = "Flutter Attach (Toggle Terminal)" })
+      map("n", "<leader>fp", flutter_preview_toggle, { desc = "Flutter Widget Preview" })
       map("n", "<leader>fD", "<cmd>FlutterDebug<CR>", { desc = "Flutter Debug" })
 
       -- Hot Reload on Save
