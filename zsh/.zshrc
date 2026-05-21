@@ -161,6 +161,9 @@ alias fb="flutter build"
 alias fcl="flutter clean"
 alias fp="flutter pub get"
 
+# ADB
+alias adbphone="adb connect $(netstat -nr | awk '/default/ {print $2; exit}'):5555"
+#
 # Python
 alias py="python3"
 alias venv="source venv/bin/activate"
@@ -210,3 +213,8 @@ eval "$(starship init zsh)"
 # ✅ End of Configuration
 # ======================================
 export PATH="/Library/TeX/texbin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/aritrasanyal/.local/bin:$PATH"
+export PATH="/Users/aritrasanyal/.local/bin:$PATH"
