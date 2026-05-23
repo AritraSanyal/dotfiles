@@ -301,10 +301,9 @@ require('lazy').setup {
   -----------------------------------------------------------
   {
     'Saghen/blink.cmp',
-    build = 'cargo build --release',
+    version = '1.*',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'saghen/blink.lib',
       {
         'L3MON4D3/LuaSnip',
         version = 'v2.*',
@@ -326,7 +325,7 @@ require('lazy').setup {
 
       snippets = { preset = 'luasnip' },
 
-      sources = { default = { 'lsp', 'path', 'buffer', 'snippets' } },
+      sources = { default = { 'lsp', 'path', 'snippets' } },
       appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = 'normal' },
       fuzzy = { implementation = "prefer_rust" },
     },
