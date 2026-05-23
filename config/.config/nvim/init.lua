@@ -166,7 +166,6 @@ require('lazy').setup {
   -----------------------------------------------------------
   {
     'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -305,6 +304,7 @@ require('lazy').setup {
     build = 'cargo build --release',
     dependencies = {
       'rafamadriz/friendly-snippets',
+      'saghen/blink.lib',
       {
         'L3MON4D3/LuaSnip',
         version = 'v2.*',
