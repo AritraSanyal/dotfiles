@@ -54,8 +54,8 @@ fi
 # Bar configuration
 # -----------------------------
 export SB_BAR=(
-  position=left
-  height=60
+  position=top
+  height=40
   sticky=on
   topmost=off
   shadow=off
