@@ -3,25 +3,11 @@
 CONFIG_DIR="$HOME/.config/sketchybar"
 . "$CONFIG_DIR/globals.sh"
 
-sb_separator() {
-  sepName="sep$RANDOM"
-
-  sketchybar \
-    --add item "$sepName" "$1" \
-    --set "$sepName" \
-      label="───────" \
-      padding_left="$2" \
-      padding_right="$3" \
-      icon.drawing=off \
-      label.font.size=9.0 \
-      label.color="$OX_DIM"
-}
-
 sb_clock() {
 
   # HOURS
   sketchybar \
-    --add item clock.hh left \
+    --add item clock.hh center\
     --set clock.hh \
       script="$PLUGIN_DIR/clock.sh" \
       update_freq=30 \
@@ -30,42 +16,27 @@ sb_clock() {
       label.drawing=on \
       label.font.size=30 \
       label.color="$OX_FG" \
-      padding_left=0 \
-      padding_right=5 \
+      padding_left=10\
+      padding_right=5\
       y_offset=0
 
   # MINUTES
   sketchybar \
-    --add item clock.mm left \
+    --add item clock.mm center \
     --set clock.mm \
       script="$PLUGIN_DIR/clock.sh" \
       update_freq=30 \
       drawing=on \
       icon.drawing=off \
       label.drawing=on \
-      label.font.size=22 \
+      label.font.size=30\
       label.color="$OX_FG" \
-      padding_left=0 \
+      padding_left=5\
       padding_right=10 \
       y_offset=0
 
-  # AM / PM
   sketchybar \
-    --add item clock.ap left \
-    --set clock.ap \
-      script="$PLUGIN_DIR/clock.sh" \
-      update_freq=30 \
-      drawing=on \
-      icon.drawing=off \
-      label.drawing=on \
-      label.font.size=12 \
-      label.color="$OX_FG" \
-      padding_left=0 \
-      padding_right=0 \
-      y_offset=0
-
-  sketchybar \
-    --add bracket clock_group clock.hh clock.mm clock.ap \
+    --add bracket clock_group clock.hh clock.mm\
     --set clock_group background.drawing=off
 }
 
@@ -78,6 +49,7 @@ sb_date() {
       update_freq=60 \
       icon.drawing=off \
       label="$(date '+%a')" \
+      label.font.size=20\
       padding_right=4 \
       label.color="$OX_FG"
 
@@ -88,6 +60,7 @@ sb_date() {
       update_freq=60 \
       icon.drawing=off \
       label="$(date '+%d' | sed 's/^0//')" \
+      label.font.size=30\
       padding_right=4 \
       label.color="$OX_FG"
 
@@ -98,6 +71,7 @@ sb_date() {
       update_freq=60 \
       icon.drawing=off \
       label="$(date '+%b')" \
+      label.font.size=20\
       padding_right=4 \
       label.color="$OX_FG"
 
