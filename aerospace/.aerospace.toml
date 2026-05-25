@@ -14,7 +14,7 @@ exec-on-workspace-change = [
 ]
 
 # Start AeroSpace when macOS logs in
-start-at-login = false
+start-at-login = true
 
 
 # -----------------------------
