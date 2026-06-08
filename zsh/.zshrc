@@ -183,6 +183,10 @@ alias ip="ifconfig | grep inet"
 alias h="history | tail -n 20"
 alias path="echo $PATH | tr ':' '\n'"
 
+# tty-clock
+alias clock="tty-clock -s"
+alias centerclock="tty-clock -s -c"
+
 # ======================================
 # 🔧 Config Editing Shortcuts
 # ======================================
