@@ -80,7 +80,6 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
-
 source $ZSH/oh-my-zsh.sh
 
 # ======================================
@@ -186,6 +185,10 @@ alias path="echo $PATH | tr ':' '\n'"
 # tty-clock
 alias clock="tty-clock -s"
 alias centerclock="tty-clock -s -c"
+
+# DisplayPlacer
+alias mportrait='displayplacer "id:85B44325-DB24-7636-0857-D6964E3302DB degree:90"'
+alias mlandscape='displayplacer "id:85B44325-DB24-7636-0857-D6964E3302DB degree:0"'
 
 # ======================================
 # 🔧 Config Editing Shortcuts
