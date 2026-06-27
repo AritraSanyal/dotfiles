@@ -32,6 +32,8 @@ fi
 # 🐦 Flutter
 # --------------------------------------
 export PATH="$PATH:/opt/homebrew/Caskroom/flutter/latest/flutter/bin"
+# -- Pub --
+export PATH="$PATH:$HOME/.pub-cache/bin"
 
 # --------------------------------------
 # 🤖 Android SDK
