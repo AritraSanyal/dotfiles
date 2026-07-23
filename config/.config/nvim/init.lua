@@ -183,8 +183,13 @@ require('lazy').setup {
             require('telescope.themes').get_dropdown(),
           },
           file_browser = {
-            theme = 'ivy',
             hijack_netrw = true,
+            use_ui_input = false,
+            layout_strategy = 'horizontal',
+            layout_config = {
+              prompt_position = 'top',
+            },
+            sorting_strategy = 'ascending',
           },
         },
       }
