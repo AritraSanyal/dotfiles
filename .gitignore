@@ -1,2 +1,10 @@
 .DS_Store
+# Ignore cagent's local state, logs, and auto-downloaded binaries
+.cagent/
+cagent/
 *.log
+
+# Ignore local secret environment files (API keys)
+.env
+.env.local
+*.env.log
