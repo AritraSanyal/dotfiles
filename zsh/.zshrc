@@ -58,8 +58,8 @@ export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 # --------------------------------------
 # 🤖 Claude Proxy (Dev setup)
 # --------------------------------------
-export ANTHROPIC_BASE_URL="http://localhost:8080"
-export ANTHROPIC_AUTH_TOKEN="test"
+# export ANTHROPIC_BASE_URL="http://localhost:8080"
+# export ANTHROPIC_AUTH_TOKEN="test"
 
 # --------------------------------------
 # ⚙️ MacPorts
@@ -118,6 +118,7 @@ fkill() {
   pid=$(ps aux | fzf | awk '{print $2}')
   [ -n "$pid" ] && kill -9 "$pid"
 }
+
 # Fuzzy directory jump
 fj() {
   # Use 'command' to ensure we hit the binary, not the function
@@ -174,6 +175,9 @@ alias clip="pbpaste"
 
 # SketchyBar
 alias skre="sketchybar --reload"
+
+# Aerospace
+alias aerore="aerospace reload-config"
 
 # OpenCode
 alias oc="opencode"
