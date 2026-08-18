@@ -53,11 +53,11 @@ preset = 'qwerty'
 # Window Gaps
 # -----------------------------
 [gaps]
-inner.horizontal = 10
-inner.vertical = 10
-outer.left = 10
+inner.horizontal = 5
+inner.vertical = 5
+outer.left = 60
 outer.bottom = 5
-outer.top = 60
+outer.top = 5
 outer.right = 10
 
 
