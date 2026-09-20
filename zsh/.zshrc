@@ -193,8 +193,9 @@ alias clock="tty-clock -s"
 alias centerclock="tty-clock -s -c"
 
 # DisplayPlacer
-alias mportrait='displayplacer "id:85B44325-DB24-7636-0857-D6964E3302DB degree:90"'
-alias mlandscape='displayplacer "id:85B44325-DB24-7636-0857-D6964E3302DB degree:0"'
+alias m90='displayplacer "id:3AAE6B03-61B3-42F5-0857-D6964E3302DB digree:90"'
+alias m270='displayplacer "id:3AAE6B03-61B3-42F5-0857-D6964E3302DB digree:270"'
+alias m0='displayplacer "id:3AAE6B03-61B3-42F5-0857-D6964E3302DB digree:0"'
 
 # ======================================
 # 🔧 Config Editing Shortcuts
