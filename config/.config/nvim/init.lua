@@ -189,6 +189,8 @@ require('lazy').setup {
             layout_config = {
               prompt_position = 'top',
             },
+            -- for showing the .files
+            hidden = true,
             sorting_strategy = 'ascending',
           },
         },
