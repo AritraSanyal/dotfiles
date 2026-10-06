@@ -93,13 +93,6 @@ unalias gcb 2>/dev/null
 unalias glog 2>/dev/null
 unalias fd 2>/dev/null
 
-# 🔍 Open file in nvim
-vf() {
-  local file
-  file=$(fzf)
-  [ -n "$file" ] && nvim "$file"
-}
-
 # 🌿 Git branch switcher
 gcb() {
   local branch
@@ -110,33 +103,6 @@ gcb() {
 # 📜 Git log viewer
 glog() {
   git log --oneline --graph --decorate --all | fzf
-}
-
-# 💀 Kill process safely
-fkill() {
-  local pid
-  pid=$(ps aux | fzf | awk '{print $2}')
-  [ -n "$pid" ] && kill -9 "$pid"
-}
-
-# Fuzzy directory jump
-fj() {
-  # Use 'command' to ensure we hit the binary, not the function
-  local dir
-  dir=$(command fd -t d 2>/dev/null | fzf --height 40% --reverse)
-  
-  if [ -n "$dir" ]; then
-    cd "$dir" || return
-    # This part is optional: it clears the line and shows where you landed
-    zle && zle reset-prompt 
-  fi
-}
-
-# 🔎 Search project → open in nvim
-vgrep() {
-  local file
-  file=$(rg --files | fzf)
-  [ -n "$file" ] && nvim "$file"
 }
 
 # ======================================
