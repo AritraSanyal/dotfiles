@@ -178,6 +178,11 @@ alias skrc="nvim ~/.config/sketchybar"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # ======================================
+# 🚀 Zoxide
+# ======================================
+eval "$(zoxide init zsh)"
+
+# ======================================
 # 🌟 Starship Prompt (Load Last)
 # ======================================
 
