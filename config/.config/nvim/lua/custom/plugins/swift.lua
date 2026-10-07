@@ -2,6 +2,13 @@ return {
   "devswiftzone/swift.nvim",
   ft = "swift",
   config = function()
+    -- setting up soursekit using modern neovim api
+    vim.lsp.config.sourcekit = {
+      cmd = { 'soursekit-lsp' },
+      filetypes = { 'swift', 'c', 'cpp', 'objective-c', 'objective-cpp' },
+      root_markers = { 'Package.swift', '.git' }
+    }
+    vim.lsp.enable('sourcekit')
     require("swift").setup({
       enabled = true,
 
@@ -17,7 +24,7 @@ return {
         -- LSP Integration
         lsp = {
           enabled = true,
-          auto_setup = true,      -- Automatically setup LSP
+          auto_setup = false,     -- Automatically setup LSP
           sourcekit_path = nil,   -- Auto-detect if nil
           inlay_hints = true,     -- Enable inlay hints
           semantic_tokens = true, -- Enable semantic tokens
