@@ -55,13 +55,7 @@ return {
       },
       code = {
         enabled = true,
-        style = 'normal',
-        text = nil,
-        border = nil,
         min_priority = 2,
-        padding = nil,
-        syntax = nil,
-        highlight = nil,
         signs = true,
       },
       dash = {
