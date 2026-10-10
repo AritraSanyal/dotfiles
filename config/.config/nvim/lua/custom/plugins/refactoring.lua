@@ -45,7 +45,7 @@ return {
     -- Telescope integration
     {
       "<leader>rr",
-      function() require('telescope').extensions.refactoring.refactors() end,
+      function() require('refactoring').select_refactor() end,
       mode = { "n", "x" },
       desc = "Refactor Options (Telescope)",
     },
@@ -53,6 +53,6 @@ return {
   config = function()
     require("refactoring").setup({})
     -- Load the telescope extension for UI
-    pcall(require("telescope").load_extension, "refactoring")
+    -- pcall(require("telescope").load_extension, "refactoring")
   end,
 }
