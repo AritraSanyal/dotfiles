@@ -56,17 +56,6 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # --------------------------------------
-# 🤖 Claude Proxy (Dev setup)
-# --------------------------------------
-# export ANTHROPIC_BASE_URL="http://localhost:8080"
-# export ANTHROPIC_AUTH_TOKEN="test"
-
-# --------------------------------------
-# ⚙️ MacPorts
-# --------------------------------------
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-
-# --------------------------------------
 # 🦀 Rust (correct setup)
 # --------------------------------------
 . "$HOME/.cargo/env"
@@ -81,6 +70,7 @@ plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
+  # will remove this
   zsh-vi-mode
 )
 ZVM_SYSTEM_CLIPBOARD_ENABLED=true
@@ -133,7 +123,7 @@ alias fp="flutter pub get"
 
 # ADB
 alias adbphone="adb connect $(netstat -nr | awk '/default/ {print $2; exit}'):5555"
-#
+
 # Python
 alias py="python3"
 alias venv="source venv/bin/activate"
@@ -146,9 +136,6 @@ alias skre="sketchybar --reload"
 
 # Aerospace
 alias aerore="aerospace reload-config"
-
-# OpenCode
-alias oc="opencode"
 
 # Utilities
 alias update="brew update && brew upgrade && brew cleanup"
