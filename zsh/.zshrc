@@ -101,6 +101,9 @@ glog() {
 # 🧠 Developer Aliases
 # ======================================
 
+# iOS Simulators cleanup and update
+alias update-sims="$HOME/dotfiles/script/update_ios_simulators.sh"
+
 # Navigation
 alias n="nvim"
 alias zrc="nvim ~/.zshrc"
