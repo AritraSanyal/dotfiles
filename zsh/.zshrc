@@ -102,7 +102,7 @@ glog() {
 # ======================================
 
 # iOS Simulators cleanup and update
-alias update-sims="$HOME/dotfiles/script/update_ios_simulators.sh"
+alias sims="$HOME/dotfiles/script/update_ios_simulators.sh"
 
 # Navigation
 alias n="nvim"
