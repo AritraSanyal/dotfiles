@@ -217,8 +217,12 @@ require('lazy').setup {
       -- 🛰️ Keymaps
       local builtin = require 'telescope.builtin'
       local map = vim.keymap.set
-
-      map('n', '<leader>sf', builtin.find_files, { desc = 'Find files' })
+      map('n', '<leader>sf', function()
+        builtin.find_files {
+          hidden = true,
+          file_ignore_patterns = { '^.git/' },
+        }
+      end, { desc = 'Find files' })
       map('n', '<leader>sg', builtin.live_grep, { desc = 'Live grep' })
       map('n', '<leader>sb', builtin.buffers, { desc = 'Find buffers' })
       map('n', '<leader>sh', builtin.help_tags, { desc = 'Find help' })
