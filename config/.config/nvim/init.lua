@@ -103,22 +103,38 @@ vim.diagnostic.config({
 local map = vim.keymap.set
 -- keymap to toggle vitrual text
 vim.keymap.set('n', '<leader>tv', toggle_virtual_text, { desc = 'Toggle Diagnostic Virtual Text' })
+
 -- KeyMap to toggle Inlay hints manually
 map('n', '<leader>th', toggle_inlay_hints, { desc = "Toggle Inlay Hints" })
+
 -- KeyMap to close buffer
 map('n', '<leader>bd', close_buffer, { desc = 'Close Buffer' })
+
 -- KeyMap to close all buffers
 map('n', '<leader>ba', close_all_buffers, { desc = 'Close All Buffers' })
 
+-- Disable the default spacebar behavior in normal mode
 map({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- Clears search highlights by pressing Esc
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Search disgnostic list
 map('n', '<leader>sd', vim.diagnostic.setloclist, { desc = 'Search Diagnostics list' })
+
+-- Exit go into vim mode in terminal
 map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Navimation
 map('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
 map('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
 map('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 map('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
+
+-- Escape to normal mode
 map('i', 'jk', '<Esc>', { desc = 'Exit Insert mode with jk' })
+
+-- Toggle markdown render
 map('n', '<leader>mr', function()
   require('render-markdown').toggle()
 end, { desc = 'Toggle Markdown Render' })
@@ -127,8 +143,6 @@ end, { desc = 'Toggle Markdown Render' })
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
-
-
 
 -- Highlight text on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
