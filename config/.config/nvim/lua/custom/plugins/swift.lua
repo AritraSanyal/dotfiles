@@ -1,38 +1,38 @@
 return {
-  "devswiftzone/swift.nvim",
-  ft = "swift",
+  'devswiftzone/swift.nvim',
+  ft = 'swift',
   config = function()
     -- setting up soursekit using modern neovim api
     vim.lsp.config.sourcekit = {
       cmd = { 'soursekit-lsp' },
       filetypes = { 'swift', 'c', 'cpp', 'objective-c', 'objective-cpp' },
-      root_markers = { 'Package.swift', '.git' }
+      root_markers = { 'Package.swift', '.git' },
     }
-    vim.lsp.enable('sourcekit')
-    require("swift").setup({
+    vim.lsp.enable 'sourcekit'
+    require('swift').setup {
       enabled = true,
 
       features = {
         -- Project Detection
         project_detector = {
           enabled = true,
-          auto_detect = true,        -- Auto-detect on buffer enter
+          auto_detect = true, -- Auto-detect on buffer enter
           show_notification = false, -- Show notification when project detected
-          cache_results = true,      -- Cache detection results
+          cache_results = true, -- Cache detection results
         },
 
         -- LSP Integration
         lsp = {
           enabled = true,
-          auto_setup = false,     -- Automatically setup LSP
-          sourcekit_path = nil,   -- Auto-detect if nil
-          inlay_hints = true,     -- Enable inlay hints
+          auto_setup = false, -- Automatically setup LSP
+          sourcekit_path = nil, -- Auto-detect if nil
+          inlay_hints = true, -- Enable inlay hints
           semantic_tokens = true, -- Enable semantic tokens
-          on_attach = nil,        -- Custom on_attach function
-          capabilities = nil,     -- Custom capabilities
-          cmd = nil,              -- Custom command
-          root_dir = nil,         -- Custom root_dir function
-          filetypes = { "swift" },
+          on_attach = nil, -- Custom on_attach function
+          capabilities = nil, -- Custom capabilities
+          cmd = nil, -- Custom command
+          root_dir = nil, -- Custom root_dir function
+          filetypes = { 'swift' },
           settings = {},
         },
 
@@ -45,42 +45,42 @@ return {
         -- Build Runner
         build_runner = {
           enabled = true,
-          auto_save = true,             -- Save all files before building
-          show_output = true,           -- Show output in split window
-          output_position = "botright", -- Position of output window
-          output_height = 15,           -- Height of output window
-          close_on_success = false,     -- Auto-close on successful build
-          focus_on_open = false,        -- Focus output window when opened
+          auto_save = true, -- Save all files before building
+          show_output = true, -- Show output in split window
+          output_position = 'botright', -- Position of output window
+          output_height = 15, -- Height of output window
+          close_on_success = false, -- Auto-close on successful build
+          focus_on_open = false, -- Focus output window when opened
         },
 
         -- Code Formatting
         formatter = {
-          enabled = true,
-          tool = nil,            -- Auto-detect: "swift-format" | "swiftformat"
-          format_on_save = true, -- Format on save
-          config_file = nil,     -- Auto-detect
+          enabled = false,
+          tool = nil, -- Auto-detect: "swift-format" | "swiftformat"
+          format_on_save = false, -- Format on save
+          config_file = nil, -- Auto-detect
         },
 
         -- Linting
         linter = {
           enabled = true,
           lint_on_save = true, -- Lint on save
-          auto_fix = false,    -- Auto-fix issues
-          config_file = nil,   -- Auto-detect
+          auto_fix = false, -- Auto-fix issues
+          config_file = nil, -- Auto-detect
         },
 
         -- Xcode Integration
         xcode = {
           enabled = true,
-          default_scheme = nil,    -- Default scheme to build
+          default_scheme = nil, -- Default scheme to build
           default_simulator = nil, -- Default simulator
-          show_output = true,      -- Show build output
-          output_position = "botright",
+          show_output = true, -- Show build output
+          output_position = 'botright',
           output_height = 15,
         },
       },
 
-      log_level = "info",
-    })
+      log_level = 'info',
+    }
   end,
 }

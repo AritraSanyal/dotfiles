@@ -27,31 +27,31 @@ end
 local toggle_virtual_text = function()
   local current_value = vim.diagnostic.config().virtual_text
   if current_value then
-    vim.diagnostic.config({ virtual_text = false })
+    vim.diagnostic.config { virtual_text = false }
   else
-    vim.diagnostic.config({ virtual_text = true })
+    vim.diagnostic.config { virtual_text = true }
   end
 end
 
 -- Smart Buffer Close Function
 local close_buffer = function()
-  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  local buffers = vim.fn.getbufinfo { buflisted = 1 }
 
   if #buffers <= 1 then
-    vim.cmd('bd')
-    vim.cmd('Dashboard')
+    vim.cmd 'bd'
+    vim.cmd 'Dashboard'
   else
-    vim.cmd('bd')
+    vim.cmd 'bd'
   end
 end
 
 -- Close All Buffers Function
 local close_all_buffers = function()
-  local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+  local buffers = vim.fn.getbufinfo { buflisted = 1 }
   for _, buf in ipairs(buffers) do
     vim.cmd('bd ' .. buf.bufnr)
   end
-  vim.cmd('Dashboard')
+  vim.cmd 'Dashboard'
 end
 
 -----------------------------------------------------------
@@ -87,15 +87,15 @@ vim.opt.inccommand = 'split'
 -----------------------------------------------------------
 -- Diagnostic
 -----------------------------------------------------------
-vim.diagnostic.config({
+vim.diagnostic.config {
   virtual_text = {
     spacing = 4,
     prefix = ' 󰄮', -- Wrap this in single or double quotes
-    source = "if_many",
+    source = 'if_many',
   },
   update_in_insert = false,
   severity_sort = true, -- Changed 'severity' to 'severity_sort'
-})
+}
 
 -----------------------------------------------------------
 -- Keymaps
@@ -105,7 +105,7 @@ local map = vim.keymap.set
 vim.keymap.set('n', '<leader>tv', toggle_virtual_text, { desc = 'Toggle Diagnostic Virtual Text' })
 
 -- KeyMap to toggle Inlay hints manually
-map('n', '<leader>th', toggle_inlay_hints, { desc = "Toggle Inlay Hints" })
+map('n', '<leader>th', toggle_inlay_hints, { desc = 'Toggle Inlay Hints' })
 
 -- KeyMap to close buffer
 map('n', '<leader>bd', close_buffer, { desc = 'Close Buffer' })
@@ -139,7 +139,6 @@ map('n', '<leader>mr', function()
   require('render-markdown').toggle()
 end, { desc = 'Toggle Markdown Render' })
 
-
 -----------------------------------------------------------
 -- Autocommands
 -----------------------------------------------------------
@@ -153,11 +152,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- Disable indent line for dashboard
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "dashboard",
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'dashboard',
   callback = function()
     vim.b.ibl_disable = true
-    vim.opt_local.colorcolumn = ""
+    vim.opt_local.colorcolumn = ''
     vim.opt_local.cursorline = false
     vim.opt_local.relativenumber = false
   end,
@@ -172,7 +171,7 @@ require('lazy').setup {
   -- Core Plugins
   -----------------------------------------------------------
   { 'NMAC427/guess-indent.nvim', config = true },
-  { 'folke/which-key.nvim',      event = 'VeryLazy', config = true },
+  { 'folke/which-key.nvim', event = 'VeryLazy', config = true },
 
   -----------------------------------------------------------
   -- Telescope
@@ -187,7 +186,7 @@ require('lazy').setup {
       'nvim-tree/nvim-web-devicons',
     },
     config = function()
-      local telescope = require('telescope')
+      local telescope = require 'telescope'
       local fb_actions = telescope.extensions.file_browser.actions
 
       telescope.setup {
@@ -227,16 +226,16 @@ require('lazy').setup {
 
       -- 🗂️ File Browser Keymaps
       map('n', '<leader>e', function()
-        telescope.extensions.file_browser.file_browser({
+        telescope.extensions.file_browser.file_browser {
           path = '%:p:h',
           select_buffer = true,
-        })
+        }
       end, { desc = 'Open File Browser (current file dir)' })
 
       map('n', '<leader>E', function()
-        telescope.extensions.file_browser.file_browser({
+        telescope.extensions.file_browser.file_browser {
           path = vim.loop.cwd(),
-        })
+        }
       end, { desc = 'Open File Browser (CWD)' })
     end,
   },
@@ -247,10 +246,10 @@ require('lazy').setup {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      { 'williamboman/mason.nvim',                  config = true },
+      { 'williamboman/mason.nvim', config = true },
       { 'williamboman/mason-lspconfig.nvim' },
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
-      { 'j-hui/fidget.nvim',                        opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
       'saghen/blink.cmp',
     },
     config = function()
@@ -269,7 +268,9 @@ require('lazy').setup {
             require('lspconfig')[server_name].setup {
               on_attach = function(_, bufnr)
                 local map = function(keys, func, desc)
-                  if desc then desc = 'LSP: ' .. desc end
+                  if desc then
+                    desc = 'LSP: ' .. desc
+                  end
                   vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
                 end
                 map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -287,7 +288,6 @@ require('lazy').setup {
     end,
   },
 
-
   -----------------------------------------------------------
   -- Formatter
   -----------------------------------------------------------
@@ -303,17 +303,18 @@ require('lazy').setup {
           end
           return { timeout_ms = 500, lsp_fallback = true }
         end,
-        formatters_by_ft = { lua = { 'stylua' } },
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          dart = { 'dart_format' },
+          rust = { 'rustfmt' },
+          swift = { 'swiftformat' },
+          json = { 'prettier' },
+          markdown = { 'prettier' },
+          sh = { 'shfmt' },
+          zsh = { 'shfmt' },
+        },
       }
     end,
-  },
-
-  {
-    'rust-lang/rust.vim',
-    ft = "rust",
-    init = function()
-      vim.g.rustfmt_autosave = 1
-    end
   },
 
   -----------------------------------------------------------
@@ -347,7 +348,7 @@ require('lazy').setup {
 
       sources = { default = { 'lsp', 'path', 'snippets' } },
       appearance = { use_nvim_cmp_as_default = true, nerd_font_variant = 'normal' },
-      fuzzy = { implementation = "prefer_rust" },
+      fuzzy = { implementation = 'prefer_rust' },
     },
   },
 
@@ -369,33 +370,33 @@ require('lazy').setup {
 
   -- catpuchin
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    'catppuccin/nvim',
+    name = 'catppuccin',
     priority = 1000,
     config = function()
-      require("catppuccin").setup({
-        flavour = "auto", -- latte, frappe, macchiato, mocha
-        background = {    -- :h background
-          light = "latte",
-          dark = "mocha",
+      require('catppuccin').setup {
+        flavour = 'auto', -- latte, frappe, macchiato, mocha
+        background = { -- :h background
+          light = 'latte',
+          dark = 'mocha',
         },
         transparent_background = false, -- disables setting the background color.
         float = {
-          transparent = false,          -- enable transparent floating windows
-          solid = false,                -- use solid styling for floating windows, see |winborder|
+          transparent = false, -- enable transparent floating windows
+          solid = false, -- use solid styling for floating windows, see |winborder|
         },
-        term_colors = false,            -- sets terminal colors (e.g. `g:terminal_color_0`)
+        term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
         dim_inactive = {
-          enabled = false,              -- dims the background color of inactive window
-          shade = "dark",
-          percentage = 0.15,            -- percentage of the shade to apply to the inactive window
+          enabled = false, -- dims the background color of inactive window
+          shade = 'dark',
+          percentage = 0.15, -- percentage of the shade to apply to the inactive window
         },
-        no_italic = false,              -- Force no italic
-        no_bold = false,                -- Force no bold
-        no_underline = false,           -- Force no underline
-        styles = {                      -- Handles the styles of general hi groups (see `:h highlight-args`):
-          comments = { "italic" },      -- Change the style of comments
-          conditionals = { "italic" },
+        no_italic = false, -- Force no italic
+        no_bold = false, -- Force no bold
+        no_underline = false, -- Force no underline
+        styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+          comments = { 'italic' }, -- Change the style of comments
+          conditionals = { 'italic' },
           loops = {},
           functions = {},
           keywords = {},
@@ -410,18 +411,18 @@ require('lazy').setup {
         },
         lsp_styles = { -- Handles the style of specific lsp hl groups (see `:h lsp-highlight`).
           virtual_text = {
-            errors = { "italic" },
-            hints = { "italic" },
-            warnings = { "italic" },
-            information = { "italic" },
-            ok = { "italic" },
+            errors = { 'italic' },
+            hints = { 'italic' },
+            warnings = { 'italic' },
+            information = { 'italic' },
+            ok = { 'italic' },
           },
           underlines = {
-            errors = { "underline" },
-            hints = { "underline" },
-            warnings = { "underline" },
-            information = { "underline" },
-            ok = { "underline" },
+            errors = { 'underline' },
+            hints = { 'underline' },
+            warnings = { 'underline' },
+            information = { 'underline' },
+            ok = { 'underline' },
           },
           inlay_hints = {
             background = true,
@@ -438,16 +439,15 @@ require('lazy').setup {
           notify = false,
           mini = {
             enabled = true,
-            indentscope_color = "",
+            indentscope_color = '',
           },
           -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
         },
-      })
+      }
 
       -- setup must be called before loading
-      vim.cmd.colorscheme "catppuccin-nvim"
+      vim.cmd.colorscheme 'catppuccin-nvim'
     end,
-
   },
 
   -----------------------------------------------------------
