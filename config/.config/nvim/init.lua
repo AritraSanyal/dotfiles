@@ -325,7 +325,7 @@ require('lazy').setup {
   -- Autocompletion
   -----------------------------------------------------------
   {
-    'Saghen/blink.cmp',
+    'saghen/blink.cmp',
     version = '1.*',
     dependencies = {
       'rafamadriz/friendly-snippets',
