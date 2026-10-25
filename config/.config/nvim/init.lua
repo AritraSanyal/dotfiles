@@ -35,7 +35,6 @@ end
 
 -- Smart Buffer Close Function
 local close_buffer = function()
-  local bufnr = vim.api.nvim_get_current_buf()
   local buffers = vim.fn.getbufinfo({ buflisted = 1 })
 
   if #buffers <= 1 then
