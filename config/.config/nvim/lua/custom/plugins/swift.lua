@@ -5,7 +5,7 @@ return {
   config = function()
     -- setting up soursekit using modern neovim api
     vim.lsp.config.sourcekit = {
-      cmd = { 'soursekit-lsp' },
+      cmd = { 'sourcekit-lsp' },
       filetypes = { 'swift', 'c', 'cpp', 'objective-c', 'objective-cpp' },
       root_markers = { 'Package.swift', '.git' },
     }
