@@ -13,15 +13,15 @@ Dotfiles are managed using **GNU Stow**, which creates symlinks from this reposi
 
 Main tools configured in this repository:
 
-* **Window Manager:** Aerospace (tiling window manager for macOS)
-* **Status Bar:** SketchyBar (custom themes, workspace & system monitors)
-* **Terminal:** Ghostty (Catppuccin Mocha theme)
-* **Shell:** Zsh + Oh My Zsh
-* **Prompt:** Starship (Catppuccin Mocha palette)
-* **Editor:** Neovim (lazy.nvim, blink.cmp, conform.nvim, kickstart-based)
-* **System Monitors:** btop / htop
-* **CLI Tools:** fzf, git, eza, ripgrep, etc.
-* **Languages & SDKs:** Flutter/Dart, Rust, Swift, Python, Java
+- **Window Manager:** Aerospace (tiling window manager for macOS)
+- **Status Bar:** SketchyBar (custom themes, workspace & system monitors)
+- **Terminal:** Ghostty (Catppuccin Mocha theme)
+- **Shell:** Zsh + Oh My Zsh
+- **Prompt:** Starship (Catppuccin Mocha palette)
+- **Editor:** Neovim (lazy.nvim, blink.cmp, conform.nvim, kickstart-based)
+- **System Monitors:** btop / htop
+- **CLI Tools:** fzf, git, eza, ripgrep, etc.
+- **Languages & SDKs:** Flutter/Dart, Rust, Swift, Python, Java
 
 ---
 
@@ -49,6 +49,7 @@ dotfiles
 Inside each directory the structure mirrors `$HOME`.
 
 Example:
+
 ```
 config/.config/nvim  -->  ~/.config/nvim
 zsh/.zshrc          -->  ~/.zshrc
@@ -60,22 +61,24 @@ zsh/.zshrc          -->  ~/.zshrc
 
 Before installing on a fresh macOS machine:
 
-* macOS
-* Command Line Tools: `xcode-select --install`
-* Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-* GNU Stow: `brew install stow`
+- macOS
+- Command Line Tools: `xcode-select --install`
+- Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+- GNU Stow: `brew install stow`
 
 ---
 
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/AritraSanyal/dotfiles.git ~/dotfiles
    cd ~/dotfiles
    ```
 
 2. Restore all Homebrew packages and applications:
+
    ```bash
    brew bundle --file=~/dotfiles/Brewfile
    ```
@@ -92,12 +95,15 @@ Before installing on a fresh macOS machine:
 This repository includes a `Brewfile` capturing all installed command-line formulae, GUI casks, taps, and fonts.
 
 ### Install / Restore:
+
 ```bash
 brew bundle --file=~/dotfiles/Brewfile
 ```
 
 ### Update `Brewfile`:
+
 Whenever you install new tools or casks and want to update the snapshot:
+
 ```bash
 brew bundle dump --force --describe --file=~/dotfiles/Brewfile
 ```
@@ -108,16 +114,19 @@ brew bundle dump --force --describe --file=~/dotfiles/Brewfile
 
 Plugins and tools are managed automatically:
 
-* **Plugin Manager:** [lazy.nvim](https://github.com/folke/lazy.nvim)
-* **Completion:** [blink.cmp](https://github.com/Saghen/blink.cmp) (Rust-powered fuzzy autocompletion)
-* **Formatting:** [conform.nvim](https://github.com/stevearc/conform.nvim) (unified formatting on save for Lua, Dart, Rust, Swift)
-* **LSP & Tools:** [mason.nvim](https://github.com/williamboman/mason.nvim)
+- **Plugin Manager:** [lazy.nvim](https://github.com/folke/lazy.nvim)
+- **Completion:** [blink.cmp](https://github.com/Saghen/blink.cmp) (Rust-powered fuzzy autocompletion)
+- **Formatting:** [conform.nvim](https://github.com/stevearc/conform.nvim) (unified formatting on save for Lua, Dart, Rust, Swift)
+- **LSP & Tools:** [mason.nvim](https://github.com/williamboman/mason.nvim)
 
 On first launch, plugins will install automatically. To sync plugins manually:
+
 ```vim
 :Lazy sync
 ```
+
 To check active formatters on any file:
+
 ```vim
 :ConformInfo
 ```
@@ -128,7 +137,7 @@ To check active formatters on any file:
 
 Custom helper scripts live in [`script/`](script/):
 
-* **`script/update_ios_simulators.sh`**: Interactive CLI tool to clean up old runtime caches, remove unavailable virtual devices, and download the latest iOS platforms. Run via alias:
+- **`script/update_ios_simulators.sh`**: Interactive CLI tool to clean up old runtime caches, remove unavailable virtual devices, and download the latest iOS platforms. Run via alias:
   ```bash
   sims
   ```
@@ -149,11 +158,5 @@ stow aerospace config fzf git zsh
 
 ## Notes
 
-* Sensitive files such as SSH keys and `.env` credentials are **never tracked**.
-* Caches and local runtime states are ignored via `.gitignore`.
-
----
-
-## License
-
-MIT License
+- Sensitive files such as SSH keys and `.env` credentials are **never tracked**.
+- Caches and local runtime states are ignored via `.gitignore`.
