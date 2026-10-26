@@ -14,7 +14,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # --------------------------------------
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-fi  
+fi
 
 export HOMEBREW_GITHUB_API_TOKEN=""
 
@@ -191,8 +191,5 @@ eval "$(starship init zsh)"
 # ======================================
 export PATH="/Library/TeX/texbin:$PATH"
 
-
 # Added by Antigravity CLI installer
 export PATH="/Users/aritrasanyal/.local/bin:$PATH"
-export PATH="/Users/aritrasanyal/.local/bin:$PATH"
-
