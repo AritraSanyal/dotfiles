@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
@@ -17,7 +18,7 @@ return {
 
     notify = {
       enabled = true,
-      view = "notify",
+      view = 'notify',
     },
 
     presets = {
@@ -31,7 +32,7 @@ return {
 
   config = function(_, opts)
     -- ✅ FIX: background highlight
-    vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
+    vim.api.nvim_set_hl(0, 'NotifyBackground', { bg = '#000000' })
 
     require('noice').setup(opts)
 

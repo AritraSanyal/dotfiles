@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   'mrcjkb/rustaceanvim',
   version = '^9',
@@ -10,7 +11,9 @@ return {
       server = {
         on_attach = function(_, bufnr)
           local map = function(keys, func, desc)
-            if desc then desc = 'LSP: ' .. desc end
+            if desc then
+              desc = 'LSP: ' .. desc
+            end
             vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
           end
           map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
