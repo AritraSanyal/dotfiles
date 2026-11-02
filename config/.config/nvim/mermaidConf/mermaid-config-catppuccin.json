@@ -1,0 +1,11 @@
+{
+  "theme": "base",
+  "look": "classic",
+  "themeVariables": {
+    "primaryColor": "#1e1e2e",
+    "primaryTextColor": "#cdd6f4",
+    "primaryBorderColor": "#89b4fa",
+    "lineColor": "#74c7ec",
+    "fontFamily": "JetBrainsMono Nerd Font, monospace"
+  }
+}

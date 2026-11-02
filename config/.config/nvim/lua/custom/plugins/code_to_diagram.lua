@@ -55,6 +55,12 @@ return {
           background = 'transparent', -- 'transparent' | 'white' | '#hex'
           theme = 'dark', -- matches your Catppuccin Mocha theme
           scale = 1, -- crisp rendering on high-DPI / Retina displays
+          cli_args = {
+            '-c',
+            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-config-catppuccin.json',
+            '-C',
+            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-clean.css',
+          },
           width = nil, -- nil | 800 | 400 | ...
           height = nil, -- nil | 600 | 300 | ...
           -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain

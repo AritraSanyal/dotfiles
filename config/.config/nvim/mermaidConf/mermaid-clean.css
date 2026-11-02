@@ -1,0 +1,6 @@
+.node rect, .node circle, .node ellipse, .node polygon, .node path {
+  stroke: #74c7ec !important;
+  stroke-width: 1.5px !important;
+  fill: #1e1e2e !important;
+  filter: none !important; /* No drop shadows */
+}
