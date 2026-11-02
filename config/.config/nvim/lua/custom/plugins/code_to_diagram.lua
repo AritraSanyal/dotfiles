@@ -52,7 +52,7 @@ return {
       },
       renderer_options = {
         mermaid = {
-          background = nil, -- 'transparent' | 'white' | '#hex'
+          background = 'transparent', -- 'transparent' | 'white' | '#hex'
           theme = 'dark', -- matches your Catppuccin Mocha theme
           scale = 1, -- crisp rendering on high-DPI / Retina displays
           width = nil, -- nil | 800 | 400 | ...
