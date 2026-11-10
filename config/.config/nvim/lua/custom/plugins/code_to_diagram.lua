@@ -43,11 +43,7 @@ return {
     ft = { 'markdown' },
     opts = {
       events = {
-        render_buffer = {
-          'InsertLeave',
-          'BufWinEnter',
-          'TextChanged',
-        },
+        render_buffer = {},
         clear_buffer = { 'BufLeave' },
       },
       renderer_options = {
@@ -60,11 +56,30 @@ return {
             vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-config-catppuccin.json',
             '-C',
             vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-clean.css',
+            '-p',
+            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/puppeteer-config.json',
           },
           width = nil, -- nil | 800 | 400 | ...
           height = nil, -- nil | 600 | 300 | ...
           -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain
         },
+      },
+    },
+    keys = {
+      {
+        '<leader>td',
+        function()
+          local diagram = require 'diagram'
+          if vim.b.diagram_active then
+            diagram.clear()
+            vim.b.diagram_active = false
+          else
+            diagram.render()
+            vim.b.diagram_active = true
+          end
+        end,
+        ft = { 'markdown' },
+        desc = '[T]oggle inline [D]iagram',
       },
     },
   },
