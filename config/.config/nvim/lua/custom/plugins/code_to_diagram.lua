@@ -41,6 +41,23 @@ return {
     '3rd/diagram.nvim',
     dependencies = { '3rd/image.nvim' },
     ft = { 'markdown' },
+    keys = {
+      {
+        '<leader>td',
+        function()
+          local diagram = require 'diagram'
+          if vim.b.diagram_active then
+            diagram.clear()
+            vim.b.diagram_active = false
+          else
+            diagram.render()
+            vim.b.diagram_active = true
+          end
+        end,
+        ft = { 'markdown' },
+        desc = '[T]oggle inline [D]iagram',
+      },
+    },
     opts = {
       events = {
         render_buffer = {},
@@ -63,23 +80,6 @@ return {
           height = nil, -- nil | 600 | 300 | ...
           -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain
         },
-      },
-    },
-    keys = {
-      {
-        '<leader>td',
-        function()
-          local diagram = require 'diagram'
-          if vim.b.diagram_active then
-            diagram.clear()
-            vim.b.diagram_active = false
-          else
-            diagram.render()
-            vim.b.diagram_active = true
-          end
-        end,
-        ft = { 'markdown' },
-        desc = '[T]oggle inline [D]iagram',
       },
     },
   },
