@@ -29,3 +29,24 @@
   fill: #cdd6f4 !important;
   font-weight: 600 !important;
 }
+
+/* LABELS BETWEEN ARROWS */
+.edgeLabel,
+.edgeLabel rect,
+.edgeLabel span,
+.edgeLabel p,
+.edgeLabel .label-container,
+.edgeLabel .background {
+  background: transparent !important;
+  background-color: transparent !important;
+  fill: transparent !important;
+  stroke: transparent !important;
+}
+
+/* ENSURE LABEL TEXT REMAINS CRISP AND READABLE */
+.edgeLabel text,
+.edgeLabel span,
+.edgeLabel p {
+  color: #cdd6f4 !important;
+  fill: #cdd5f4 !important;
+}

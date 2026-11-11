@@ -34,6 +34,24 @@ return {
       },
       editor_only_render_when_focused = false,
     },
+    config = function(_, opts)
+      require('image').setup(opts)
+      -- center diagrams horizontally to match centered code blocks
+      local ok, kitty = pcall(require, 'image/backends/kitty')
+      if ok and kitty and kitty.render then
+        local orig_render = kitty.render
+        kitty.render = function(image, x, y, width, height)
+          local win_info = vim.fn.getwininfo(image.window)[1]
+          if win_info then
+            local text_width = win_info.width - win_info.textoff
+            if text_width > width then
+              x = win_info.wincol - 1 + win_info.textoff + math.floor((text_width - width) / 2)
+            end
+          end
+          return orig_render(image, x, y, width, height)
+        end
+      end
+    end,
   },
 
   -- 3. Diagram plugin scoped to Mermaid
