@@ -50,3 +50,13 @@
   color: #cdd6f4 !important;
   fill: #cdd5f4 !important;
 }
+
+/* TREEVIEW-BETA (FILE-TREE) */
+.treeView-node-label {
+  fill: #ffffff !important;
+}
+
+.treeView-node-line {
+  stroke: #ffffff !important;
+  store-width: 1.5px !important;
+}
