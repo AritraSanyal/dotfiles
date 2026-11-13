@@ -83,23 +83,6 @@ return {
         clear_buffer = { 'BufLeave' },
       },
       renderer_options = {
-        -- mermaid = {
-        --   background = 'transparent', -- 'transparent' | 'white' | '#hex'
-        --   theme = 'dark', -- matches your Catppuccin Mocha theme
-        --   scale = 1, -- crisp rendering on high-DPI / Retina displays
-        --   cli_args = {
-        --     '-c',
-        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-config-catppuccin.json',
-        --     '-C',
-        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-clean.css',
-        --     '-p',
-        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/puppeteer-config.json',
-        --   },
-        --   width = nil, -- nil | 800 | 400 | ...
-        --   height = nil, -- nil | 600 | 300 | ...
-        --   -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain
-        -- },
-
         --NOTE: D2 config
         d2 = {
           -- theme options 200->dark_mauve 201->dark_flagship 300->terminal_hacker
