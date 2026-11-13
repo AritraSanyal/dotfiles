@@ -65,13 +65,22 @@ return {
         '<leader>td',
         function()
           local diagram = require 'diagram'
-          if vim.b.diagram_active then
-            diagram.clear()
-            vim.b.diagram_active = false
-          else
+          -- clear teh existing diagram
+          diagram.clear()
+          vim.schedule(function()
             diagram.render()
             vim.b.diagram_active = true
-          end
+          end)
+        end,
+        ft = { 'markdown' },
+        desc = '[T]oggle inline [D]iagram',
+      },
+      {
+        '<leader>tc',
+        function()
+          local diagram = require 'diagram'
+          diagram.clear()
+          vim.b.diagram_active = false
         end,
         ft = { 'markdown' },
         desc = '[T]oggle inline [D]iagram',
@@ -79,7 +88,7 @@ return {
     },
     opts = {
       events = {
-        render_buffer = {},
+        render_buffer = { 'BufWritePost' },
         clear_buffer = { 'BufLeave' },
       },
       renderer_options = {
