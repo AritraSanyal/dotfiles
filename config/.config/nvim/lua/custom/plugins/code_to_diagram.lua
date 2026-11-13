@@ -73,7 +73,7 @@ return {
           end)
         end,
         ft = { 'markdown' },
-        desc = '[T]oggle inline [D]iagram',
+        desc = '[T]oggle [D]iagram',
       },
       {
         '<leader>tc',
@@ -83,7 +83,7 @@ return {
           vim.b.diagram_active = false
         end,
         ft = { 'markdown' },
-        desc = '[T]oggle inline [D]iagram',
+        desc = '[T]oggle Diagram [C]lear',
       },
     },
     opts = {
