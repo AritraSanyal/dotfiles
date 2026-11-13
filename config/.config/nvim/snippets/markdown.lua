@@ -14,9 +14,9 @@ return {
     i(1),
   }),
 
-  -- SNIPPET ADDING MERMAID CODE SNIPPET
-  s({ trig = 'merm', desc = 'Insert Mermaid Diagram' }, {
-    t { '```mermaid', '' },
+  -- SNIPPET ADDING D2 CODE SNIPPET
+  s({ trig = 'd2', desc = 'Insert D2 Diagram' }, {
+    t { '```d2', '' },
     i(1),
     t { '', '```' },
   }),

@@ -25,7 +25,8 @@ return {
           filetypes = { 'markdown' },
         },
       },
-      max_height_window_percentage = 50,
+      max_height_window_percentage = 75,
+      max_width_window_percentage = 100,
       window_overlap_clear_enabled = true,
       window_overlap_clear_ft_ignore = {
         'cmp_menu',
@@ -82,21 +83,31 @@ return {
         clear_buffer = { 'BufLeave' },
       },
       renderer_options = {
-        mermaid = {
-          background = 'transparent', -- 'transparent' | 'white' | '#hex'
-          theme = 'dark', -- matches your Catppuccin Mocha theme
-          scale = 1, -- crisp rendering on high-DPI / Retina displays
-          cli_args = {
-            '-c',
-            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-config-catppuccin.json',
-            '-C',
-            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-clean.css',
-            '-p',
-            vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/puppeteer-config.json',
-          },
-          width = nil, -- nil | 800 | 400 | ...
-          height = nil, -- nil | 600 | 300 | ...
-          -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain
+        -- mermaid = {
+        --   background = 'transparent', -- 'transparent' | 'white' | '#hex'
+        --   theme = 'dark', -- matches your Catppuccin Mocha theme
+        --   scale = 1, -- crisp rendering on high-DPI / Retina displays
+        --   cli_args = {
+        --     '-c',
+        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-config-catppuccin.json',
+        --     '-C',
+        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/mermaid-clean.css',
+        --     '-p',
+        --     vim.fn.expand '~/dotfiles/config/.config/nvim/mermaidConf/puppeteer-config.json',
+        --   },
+        --   width = nil, -- nil | 800 | 400 | ...
+        --   height = nil, -- nil | 600 | 300 | ...
+        --   -- cli_grags = {"--no-sandbox"}, -- uncomment if Puppeteer permissions complain
+        -- },
+
+        --NOTE: D2 config
+        d2 = {
+          -- theme options 200->dark_mauve 201->dark_flagship 300->terminal_hacker
+          theme_id = 200, -- something called "Dark Mauve" matches with catppuccin
+          -- dark_theme_id = 200,
+          layout = 'dagre',
+          scale = 2,
+          sketch = false, -- hand drawn look
         },
       },
     },
