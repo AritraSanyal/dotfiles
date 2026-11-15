@@ -101,6 +101,9 @@ glog() {
 # 🧠 Developer Aliases
 # ======================================
 
+# Alias to rm diagram cache
+alias ddiag="rm -rf ~/.cache/nvim/diagram-cach"
+
 # iOS Simulators cleanup and update
 alias sims="$HOME/dotfiles/script/update_ios_simulators.sh"
 
