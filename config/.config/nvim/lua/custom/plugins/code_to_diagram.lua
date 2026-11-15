@@ -61,6 +61,7 @@ return {
     dependencies = { '3rd/image.nvim' },
     ft = { 'markdown' },
     keys = {
+      --NOTE: keymap for rendering the diagram
       {
         '<leader>td',
         function()
@@ -75,6 +76,8 @@ return {
         ft = { 'markdown' },
         desc = '[T]oggle [D]iagram',
       },
+
+      --NOTE: Keymap for clearing the diagram
       {
         '<leader>tc',
         function()
@@ -87,10 +90,13 @@ return {
       },
     },
     opts = {
+
+      --NOTE: when will the buffers render
       events = {
         render_buffer = { 'BufWritePost' },
         clear_buffer = { 'BufLeave' },
       },
+
       renderer_options = {
         --NOTE: D2 config
         d2 = {
@@ -98,7 +104,7 @@ return {
           theme_id = 200, -- something called "Dark Mauve" matches with catppuccin
           -- dark_theme_id = 200,
           layout = 'dagre',
-          scale = 2,
+          scale = 1,
           sketch = false, -- hand drawn look
         },
       },
