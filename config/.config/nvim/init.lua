@@ -433,13 +433,15 @@ require('lazy').setup {
           },
         },
         color_overrides = {},
-        custom_highlights = {
+        custom_highlights = function(colors)
+          return {
 
-          -- custom highlight for markdown italics
-          ['@markup.italic'] = { fg = colors.yellow, italic = true },
-          -- legacy alias fallback
-          ['@text.emphasis'] = { fg = colors.yellow, italic = true },
-        },
+            -- custom highlight for markdown italics
+            ['@markup.italic'] = { fg = colors.yellow, italic = true },
+            -- legacy alias fallback
+            ['@text.emphasis'] = { fg = colors.yellow, italic = true },
+          }
+        end,
         default_integrations = true,
         auto_integrations = false,
         integrations = {
