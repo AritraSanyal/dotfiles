@@ -104,7 +104,7 @@ return {
           theme_id = 200, -- something called "Dark Mauve" matches with catppuccin
           -- dark_theme_id = 200,
           layout = 'dagre',
-          scale = 1,
+          scale = 2,
           sketch = false, -- hand drawn look
         },
       },
