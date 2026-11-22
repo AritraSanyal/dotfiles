@@ -8,3 +8,8 @@ cagent/
 .env
 .env.local
 *.env.log
+
+# qbittorrent noise and files
+**/qBittorrent.ini
+**/qBittorrent-data.ini
+
