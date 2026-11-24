@@ -133,22 +133,24 @@ return {
     },
     opts = {
 
-      --NOTE: when will the buffers render
+      -- When will the buffers render
       events = {
         render_buffer = { 'BufWritePost' },
         clear_buffer = { 'BufLeave' },
       },
 
       renderer_options = {
-        --NOTE: D2 config
+
+        -- D2 config
         d2 = {
-          -- theme options 200->dark_mauve 201->dark_flagship 300->terminal_hacker
-          theme_id = 200, -- something called "Dark Mauve" matches with catppuccin
+          -- theme options:
+          -- 200:dark_mauve, 201:dark_flagship, 300:terminal_hacker
+          theme_id = 200,
           -- dark_theme_id = 200,
           -- layout enginine are dagre | elk | tala
           layout = 'elk',
           scale = 2,
-          sketch = false, -- hand drawn look
+          sketch = true,
         },
       },
     },
