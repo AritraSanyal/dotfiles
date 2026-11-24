@@ -133,9 +133,11 @@ return {
     },
     opts = {
 
-      -- When will the buffers render
       events = {
+
+        -- When will the diagram render
         render_buffer = {},
+        -- When will the diagram clear
         clear_buffer = { 'BufLeave' },
       },
 
@@ -146,10 +148,11 @@ return {
           -- theme options:
           -- 200:dark_mauve, 201:dark_flagship, 300:terminal_hacker
           theme_id = 200,
-          -- dark_theme_id = 200,
           -- layout enginine are dagre | elk | tala
           layout = 'elk',
+          -- determines the scale of the diagram
           scale = 2,
+          -- opt to make the diagram like excalidraw
           sketch = true,
         },
       },
