@@ -100,7 +100,7 @@ return {
     dependencies = { '3rd/image.nvim' },
     ft = { 'markdown' },
     keys = {
-      --NOTE: keymap for rendering the diagram
+      -- NOTE: keymap for rendering the diagram
       {
         '<leader>td',
         function()
@@ -117,7 +117,7 @@ return {
         desc = '[T]oggle [D]iagram (Render & Fold Code)',
       },
 
-      --NOTE: Keymap for clearing the diagram
+      -- NOTE: Keymap for clearing the diagram
       {
         '<leader>tc',
         function()
@@ -135,7 +135,7 @@ return {
 
       -- When will the buffers render
       events = {
-        render_buffer = { 'BufWritePost' },
+        render_buffer = {},
         clear_buffer = { 'BufLeave' },
       },
 
