@@ -1,4 +1,43 @@
 ---@diagnostic disable:undefined-global
+
+--- Helper function to fold diagram code blocks
+local function fold_diagrams(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  local ok, parser = pcall(vim.treesitter.get_parser, bufnr, 'markdown')
+  if not ok or not parser then
+    return
+  end
+  local tree = parser:parse()[1]
+  if not tree then
+    return
+  end
+
+  local query = vim.treesitter.query.parse('markdown', '((fenced_code_block (info_string) @info (code_fence_content) @code))')
+
+  --TODO: add mermaid and plantuml when needed
+  local diagram_langs = { d2 = true }
+
+  local cur_lang = nil
+  for id, node in query:iter_captures(tree:root(), bufnr) do
+    local name = query.captures[id]
+    if name == 'info' then
+      cur_lang = vim.treesitter.get_node_text(node, bufnr):match '^%s*(%S+)'
+    elseif name == 'code' and diagram_langs[cur_lang] then
+      local srow, _, _, _ = node:range()
+      local parent = node:parent()
+      local _, _, erow, _ = parent:range()
+      --WARN: Start folding from srow + 1, never srow
+      --NOTE: If srow is folded, image.nvim thinks the entire diagram s hidden
+      if erow > srow then
+        -- fold inner lines and closing backticks
+        vim.api.nvim_buf_call(bufnr, function()
+          pcall(vim.cmd, string.format('silent! %d, %dfold', srow + 1, erow))
+        end)
+      end
+    end
+  end
+end
+
 return {
   -- 1. Luarocks for the 'magick' rock
   {
@@ -71,10 +110,11 @@ return {
           vim.schedule(function()
             diagram.render()
             vim.b.diagram_active = true
+            fold_diagrams()
           end)
         end,
         ft = { 'markdown' },
-        desc = '[T]oggle [D]iagram',
+        desc = '[T]oggle [D]iagram (Render & Fold Code)',
       },
 
       --NOTE: Keymap for clearing the diagram
@@ -84,6 +124,8 @@ return {
           local diagram = require 'diagram'
           diagram.clear()
           vim.b.diagram_active = false
+          -- Eliminate all folds and restore code
+          vim.cmd 'silent! normal! zE'
         end,
         ft = { 'markdown' },
         desc = '[T]oggle Diagram [C]lear',
